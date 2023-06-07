@@ -1,6 +1,6 @@
 package org.denizenmc.menus;
 
-import org.denizenmc.menus.elements.Element;
+import org.denizenmc.menus.components.elements.Element;
 
 public interface IMenusAPI {
     /**

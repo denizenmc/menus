@@ -1,18 +1,22 @@
 package org.denizenmc.menus.components;
-import org.denizenmc.menus.elements.Element;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
+import org.denizenmc.menus.components.elements.Element;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class Menu {
+public class Menu implements InventoryHolder {
     private UUID id;
     private int size;
     private String name;
     private final Map<Integer, Element> content;
 
-    public Menu(String name) {
+    public Menu() {
         id = UUID.randomUUID();
+        name = "Default Menu";
         size = 36;
         content = new HashMap<>();
     }
@@ -31,5 +35,21 @@ public class Menu {
 
     public Map<Integer, Element> getContent() {
         return content;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Menu) {
+            return ((Menu) o).getId().equals(id);
+        } else { return false; }
+    }
+
+    public static Menu fromFile(File file) {
+        return null;
+    }
+
+    @Override
+    public Inventory getInventory() {
+        return null;
     }
 }
