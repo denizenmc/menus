@@ -4,29 +4,47 @@ import org.bukkit.inventory.ItemStack;
 import org.denizenmc.menus.components.Session;
 
 import javax.annotation.Nullable;
-import java.util.List;
+import java.util.*;
 
 public class ChangeMenuAction extends Action {
 
     @Override
-    String getName() {
+    public String getName() {
+        return "change-menu";
+    }
+
+    @Override
+    public List<String> getDescription() {
+        return new ArrayList<>(Arrays.asList("&fChange to another menu.",
+                "", "&eInstructions", "&7>> &fEnter the menu name", "&7>> without color codes"));
+    }
+
+    @Override
+    public String getIconPlayerHeadName() {
         return null;
     }
 
     @Override
-    List<String> getDescription() {
-        return null;
+    public Map<String, String> getDefaultProperties() {
+        Map<String, String> properties = new HashMap<>();
+        properties.put("menu-name", "none");
+        return properties;
     }
 
     @Override
-    String getIconPlayerHeadName() {
-        return null;
+    public Action copy() {
+        return new ChangeMenuAction();
     }
 
     @Nullable
     @Override
     public ItemStack getDynamicIcon(Session session, int count) {
         return null;
+    }
+
+    @Override
+    public boolean isDynamicIcon() {
+        return false;
     }
 
     @Override

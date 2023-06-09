@@ -1,4 +1,68 @@
 package org.denizenmc.menus.components.actions;
 
-public class NextPageAction {
+import org.bukkit.inventory.ItemStack;
+import org.denizenmc.menus.components.Session;
+
+import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class NextPageAction extends Action {
+
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
+    public List<String> getDescription() {
+        return null;
+    }
+
+    @Override
+    public String getIconPlayerHeadName() {
+        return null;
+    }
+
+    @Override
+    public Map<String, String> getDefaultProperties() {
+        return new HashMap<>();
+    }
+
+    @Override
+    public Action copy() {
+        return new NextPageAction();
+    }
+
+    @Nullable
+    @Override
+    public ItemStack getDynamicIcon(Session session, int count) {
+        return null;
+    }
+
+    @Override
+    public boolean isDynamicIcon() {
+        return false;
+    }
+
+    @Override
+    public void onLeftClick(Session session, int count) {
+
+    }
+
+    @Override
+    public void onRightClick(Session session, int count) {
+
+    }
+
+    @Override
+    public void onShiftLeftClick(Session session, int count) {
+
+    }
+
+    @Override
+    public void onShiftRightClick(Session session, int count) {
+
+    }
 }

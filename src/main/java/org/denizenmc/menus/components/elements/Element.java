@@ -16,20 +16,28 @@ public class Element {
     private ItemStack item;
     private String name;
     private List<String> description;
-    private int refreshRateTicks;
 
-    public Element(int refreshRateTicks) {
-        this.refreshRateTicks = refreshRateTicks;
+    public Element() {
         action = null;
         item = new ItemStack(Material.BARRIER);
         name = "&bDefault Element";
         description = new ArrayList<>(Arrays.asList("&fThis is a default", "&fdescription."));
     }
 
+    public Element(Action action, ItemStack item, String name, List<String> description) {
+        this.action = action;
+        this.item = item;
+        this.name = name;
+        this.description = description;
+    }
+
     public Action getAction() { return action; }
-    public int getRefreshRateTicks() { return refreshRateTicks; }
+    public ItemStack getItem() { return item; }
+    public String getName() { return name; }
+    public List<String> getDescription() { return description; }
+
     public ItemStack build(Session session, int count) {
-        if (action != null && action.getDynamicIcon(session, count) != null) {
+        if (action != null && action.isDynamicIcon()) {
             return action.getDynamicIcon(session, count);
         }
         ItemStack i = new ItemStack(item);

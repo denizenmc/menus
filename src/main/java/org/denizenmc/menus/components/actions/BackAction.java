@@ -4,22 +4,19 @@ import org.bukkit.inventory.ItemStack;
 import org.denizenmc.menus.components.Session;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
-public class CommandAction extends Action {
+public class BackAction extends Action {
 
     @Override
     public String getName() {
-        return "execute-commands";
+        return null;
     }
 
     @Override
     public List<String> getDescription() {
-        return new ArrayList<>(Arrays.asList("&fExecute commands.",
-                "", "&eInstructions", "&7>> &fEnter commands separated", "&7>> &fby &6':p:'&f or &6':c:'",
-                "&7>> &bPlaceholderAPI placeholders &esupported",
-                "&7>> &f:p: = Player Executed", "&7>> &f:c: = Console Executed", "",
-                "&eExample", "&fweather clear:c:eco give %player_name% 500:c:"));
+        return null;
     }
 
     @Override
@@ -29,14 +26,12 @@ public class CommandAction extends Action {
 
     @Override
     public Map<String, String> getDefaultProperties() {
-        Map<String, String> properties = new HashMap<>();
-        properties.put("commands", "");
-        return properties;
+        return null;
     }
 
     @Override
     public Action copy() {
-        return new CommandAction();
+        return new BackAction();
     }
 
     @Nullable

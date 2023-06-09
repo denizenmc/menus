@@ -1,14 +1,12 @@
 package org.denizenmc.menus.components;
+
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.denizenmc.menus.components.elements.Element;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
-public class Menu implements InventoryHolder {
+public class Menu implements InventoryHolder, ISerializable, Comparable<Menu> {
     private UUID id;
     private int size;
     private String name;
@@ -19,6 +17,13 @@ public class Menu implements InventoryHolder {
         name = "Default Menu";
         size = 36;
         content = new HashMap<>();
+    }
+
+    public Menu(UUID id, int size, String name, Map<Integer, Element> content) {
+        this.id = id;
+        this.size = size;
+        this.name = name;
+        this.content = content;
     }
 
     public UUID getId() { return id; }
@@ -44,12 +49,23 @@ public class Menu implements InventoryHolder {
         } else { return false; }
     }
 
-    public static Menu fromFile(File file) {
+    @Override
+    public Inventory getInventory() {
         return null;
     }
 
     @Override
-    public Inventory getInventory() {
-        return null;
+    public List<String> getPath() {
+        return Arrays.asList("menus", id.toString()+".yml");
+    }
+
+    @Override
+    public String getDirectoryName() {
+        return "menus";
+    }
+
+    @Override
+    public int compareTo(Menu o) {
+        return name.compareTo(o.getName());
     }
 }
