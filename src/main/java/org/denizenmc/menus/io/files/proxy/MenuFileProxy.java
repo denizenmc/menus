@@ -8,7 +8,7 @@ import org.denizenmc.menus.components.ISerializable;
 import org.denizenmc.menus.components.Menu;
 import org.denizenmc.menus.components.Query;
 import org.denizenmc.menus.components.actions.Action;
-import org.denizenmc.menus.components.elements.Element;
+import org.denizenmc.menus.components.Element;
 import org.denizenmc.menus.io.IOProxy;
 import org.denizenmc.menus.io.files.FileUtils;
 

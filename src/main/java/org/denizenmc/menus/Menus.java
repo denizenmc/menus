@@ -2,7 +2,6 @@ package org.denizenmc.menus;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.denizenmc.menus.components.actions.Action;
-import org.denizenmc.menus.components.elements.Element;
 import org.denizenmc.menus.io.IOSource;
 import org.denizenmc.menus.io.files.FileIOSource;
 import org.denizenmc.menus.managers.MenuManager;

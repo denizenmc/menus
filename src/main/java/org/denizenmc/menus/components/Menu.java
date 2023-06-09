@@ -2,7 +2,6 @@ package org.denizenmc.menus.components;
 
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
-import org.denizenmc.menus.components.elements.Element;
 
 import java.util.*;
 

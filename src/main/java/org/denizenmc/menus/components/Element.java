@@ -1,4 +1,4 @@
-package org.denizenmc.menus.components.elements;
+package org.denizenmc.menus.components;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
