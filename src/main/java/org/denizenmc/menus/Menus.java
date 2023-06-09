@@ -21,7 +21,6 @@ public final class Menus extends JavaPlugin {
     public void onEnable() {
         instance = this;
         initIOSource();
-        initManagers();
     }
 
     @Override
@@ -31,10 +30,6 @@ public final class Menus extends JavaPlugin {
 
     public void initIOSource() {
         ioSource = new FileIOSource(); // temp
-    }
-
-    public void initManagers() {
-        menuManager.init();
     }
 
     public static Menus getInstance() { return instance; }
