@@ -1,28 +1,27 @@
 package org.denizenmc.menus.components.actions;
 
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.denizenmc.menus.components.Session;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class NextPageAction extends Action {
 
     @Override
     public String getName() {
-        return null;
+        return "menus-next-page";
     }
 
     @Override
     public List<String> getDescription() {
-        return null;
+        return new ArrayList<>(Arrays.asList("&fIncrease the page count by 1."));
     }
 
     @Override
     public String getIconPlayerHeadName() {
-        return null;
+        return "MHF_ArrowUp";
     }
 
     @Override
@@ -42,27 +41,19 @@ public class NextPageAction extends Action {
     }
 
     @Override
+    public void onBuild(Session session, int count) {
+
+    }
+
+    @Override
     public boolean isDynamicIcon() {
         return false;
     }
 
     @Override
-    public void onLeftClick(Session session, int count) {
-
-    }
-
-    @Override
-    public void onRightClick(Session session, int count) {
-
-    }
-
-    @Override
-    public void onShiftLeftClick(Session session, int count) {
-
-    }
-
-    @Override
-    public void onShiftRightClick(Session session, int count) {
-
+    public void onClick(Session session, int count, InventoryClickEvent event) {
+        event.setCancelled(true);
+        session.setPage(session.getPage()+1);
+        session.refresh();
     }
 }

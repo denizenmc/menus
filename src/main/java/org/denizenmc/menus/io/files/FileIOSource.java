@@ -1,8 +1,7 @@
 package org.denizenmc.menus.io.files;
-import org.bukkit.configuration.file.FileConfiguration;
+
 import org.denizenmc.menus.components.ISerializable;
 import org.denizenmc.menus.components.Query;
-import org.denizenmc.menus.io.EntityType;
 import org.denizenmc.menus.io.IOSource;
 import org.denizenmc.menus.io.files.proxy.FileProxyFactory;
 

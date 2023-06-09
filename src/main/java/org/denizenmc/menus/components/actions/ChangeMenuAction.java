@@ -1,6 +1,9 @@
 package org.denizenmc.menus.components.actions;
 
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.denizenmc.menus.Menus;
+import org.denizenmc.menus.components.Menu;
 import org.denizenmc.menus.components.Session;
 
 import javax.annotation.Nullable;
@@ -10,7 +13,7 @@ public class ChangeMenuAction extends Action {
 
     @Override
     public String getName() {
-        return "change-menu";
+        return "menus-change-menu";
     }
 
     @Override
@@ -21,13 +24,13 @@ public class ChangeMenuAction extends Action {
 
     @Override
     public String getIconPlayerHeadName() {
-        return null;
+        return "zasf";
     }
 
     @Override
     public Map<String, String> getDefaultProperties() {
         Map<String, String> properties = new HashMap<>();
-        properties.put("menu-name", "none");
+        properties.put("menu-name", "");
         return properties;
     }
 
@@ -43,27 +46,22 @@ public class ChangeMenuAction extends Action {
     }
 
     @Override
+    public void onBuild(Session session, int count) {
+
+    }
+
+    @Override
     public boolean isDynamicIcon() {
         return false;
     }
 
     @Override
-    public void onLeftClick(Session session, int count) {
-
-    }
-
-    @Override
-    public void onRightClick(Session session, int count) {
-
-    }
-
-    @Override
-    public void onShiftLeftClick(Session session, int count) {
-
-    }
-
-    @Override
-    public void onShiftRightClick(Session session, int count) {
-
+    public void onClick(Session session, int count, InventoryClickEvent event) {
+        event.setCancelled(true);
+        if (getProperties().get("menu-name") == null) return;
+        Menu menu = Menus.getApi().getMenu(getProperties().get("menu-name"));
+        if (menu == null) return;
+        session.push(menu);
+        session.refresh();
     }
 }

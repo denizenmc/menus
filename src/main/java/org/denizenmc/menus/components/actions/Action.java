@@ -1,6 +1,7 @@
 package org.denizenmc.menus.components.actions;
 
 import org.bukkit.ChatColor;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.denizenmc.menus.MenusUtils;
@@ -8,6 +9,7 @@ import org.denizenmc.menus.components.Session;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +17,7 @@ public abstract class Action {
     private Map<String, String> properties;
     public Action() {
         properties = getDefaultProperties();
+        if (properties == null) properties = new HashMap<>();
     }
     public Action(Map<String, String> properties) {
         this.properties = properties;
@@ -27,7 +30,7 @@ public abstract class Action {
     public abstract Action copy();
 
     public Map<String, String> getProperties() { return properties; }
-
+    public abstract boolean isDynamicIcon();
     /**
      * If the action corresponds to a dynamic icon in the menu, return here.
      * Otherwise, return null and element icon is built like normal.
@@ -37,11 +40,10 @@ public abstract class Action {
      */
     @Nullable
     public abstract ItemStack getDynamicIcon(Session session, int count);
-    public abstract boolean isDynamicIcon();
-    public abstract void onLeftClick(Session session, int count);
-    public abstract void onRightClick(Session session, int count);
-    public abstract void onShiftLeftClick(Session session, int count);
-    public abstract void onShiftRightClick(Session session, int count);
+
+    public abstract void onBuild(Session session, int count);
+
+    public abstract void onClick(Session session, int count, InventoryClickEvent event);
 
     public ItemStack getIcon() {
         ItemStack icon = new ItemStack(MenusUtils.getHead(getIconPlayerHeadName()));

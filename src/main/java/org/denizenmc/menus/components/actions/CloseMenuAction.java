@@ -3,25 +3,25 @@ package org.denizenmc.menus.components.actions;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.denizenmc.menus.components.Session;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.*;
 
-public class PreviousPageAction extends Action {
+public class CloseMenuAction extends Action {
 
     @Override
     public String getName() {
-        return "menus-previous-page";
+        return "menus-close-menu";
     }
 
     @Override
     public List<String> getDescription() {
-        return new ArrayList<>(Arrays.asList("&fDecrease the page count by 1."));
+        return new ArrayList<>(Arrays.asList("&fClose the current menu."));
     }
 
     @Override
     public String getIconPlayerHeadName() {
-        return "MHF_ArrowDown";
+        return "Zealock";
     }
 
     @Override
@@ -31,7 +31,12 @@ public class PreviousPageAction extends Action {
 
     @Override
     public Action copy() {
-        return new PreviousPageAction();
+        return new CloseMenuAction();
+    }
+
+    @Override
+    public boolean isDynamicIcon() {
+        return false;
     }
 
     @Nullable
@@ -46,16 +51,7 @@ public class PreviousPageAction extends Action {
     }
 
     @Override
-    public boolean isDynamicIcon() {
-        return false;
-    }
-
-    @Override
     public void onClick(Session session, int count, InventoryClickEvent event) {
-        event.setCancelled(true);
-        if (session.getPage() > 1) {
-            session.setPage(session.getPage()-1);
-            session.refresh();
-        }
+        session.getPlayer().closeInventory();
     }
 }

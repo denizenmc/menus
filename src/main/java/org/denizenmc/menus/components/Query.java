@@ -11,8 +11,6 @@ public class Query {
         name = null;
     }
 
-
-
     public EntityType getEntity() {
         return entity;
     }

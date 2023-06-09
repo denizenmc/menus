@@ -1,5 +1,6 @@
 package org.denizenmc.menus.components;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -10,43 +11,59 @@ import org.denizenmc.menus.components.actions.Action;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class Element {
-    private Action action;
+    private List<Action> actions;
     private ItemStack item;
     private String name;
     private List<String> description;
 
     public Element() {
-        action = null;
+        actions = new ArrayList<>();
         item = new ItemStack(Material.BARRIER);
         name = "&bDefault Element";
         description = new ArrayList<>(Arrays.asList("&fThis is a default", "&fdescription."));
     }
 
-    public Element(Action action, ItemStack item, String name, List<String> description) {
-        this.action = action;
+    public Element(List<Action> actions, ItemStack item, String name, List<String> description) {
+        this.actions = actions;
         this.item = item;
         this.name = name;
         this.description = description;
     }
 
-    public Action getAction() { return action; }
+    public List<Action> getActions() { return actions; }
     public ItemStack getItem() { return item; }
     public String getName() { return name; }
     public List<String> getDescription() { return description; }
 
-    public ItemStack build(Session session, int count) {
-        if (action != null && action.isDynamicIcon()) {
-            return action.getDynamicIcon(session, count);
+    public ItemStack build(Session session, Map<String, Integer> counts) {
+        if (!actions.isEmpty()) {
+            ItemStack dynamicIcon = null;
+            boolean isDynamic = false;
+            for (Action a : new ArrayList<>(actions)) {
+                if (a != null) {
+                    a.onBuild(session, counts.getOrDefault(a.getName(), 1));
+                    if (a.isDynamicIcon()) {
+                        dynamicIcon = a.getDynamicIcon(session, counts.getOrDefault(a.getName(), 1));
+                        isDynamic = true;
+                    }
+                }
+            }
+            if (isDynamic) return dynamicIcon;
         }
         ItemStack i = new ItemStack(item);
         ItemMeta meta = i.getItemMeta();
         if (meta == null) return i;
+        name = PlaceholderAPI.setPlaceholders(session.getPlayer(), name);
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
         List<String> lore = i.hasItemMeta() && i.getItemMeta().getLore() != null ?
                 new ArrayList<>(i.getItemMeta().getLore()) : new ArrayList<>();
-        for (String line : description) lore.add(ChatColor.translateAlternateColorCodes('&', line));
+        for (String line : description) {
+            line = PlaceholderAPI.setPlaceholders(session.getPlayer(), line);
+            lore.add(ChatColor.translateAlternateColorCodes('&', line));
+        }
         meta.setLore(lore);
         i.setItemMeta(meta);
         return i;

@@ -1,6 +1,7 @@
 package org.denizenmc.menus.io.files.proxy;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.denizenmc.menus.Menus;
@@ -29,20 +30,26 @@ public class MenuFileProxy extends IOProxy {
         if (!file.exists()) return; // add logging logic
         FileConfiguration cfg = FileUtils.loadYML(file);
         cfg.set("id", menu.getId().toString());
-        cfg.set("size", menu.getSize());
+        cfg.set("rows", menu.getRows());
+        cfg.set("refresh-rate-seconds", menu.getRefreshRateSeconds());
         cfg.set("name", menu.getName());
         int index = 0;
         cfg.set("content-amount", menu.getContent().size());
         for (Integer i : menu.getContent().keySet()) {
             cfg.set("content."+index+".slot", i);
-            if (menu.getContent().get(i).getAction() != null) {
-                cfg.set("content."+index+".element.action.name", menu.getContent().get(i).getAction().getName());
-                int count = 0;
-                cfg.set("content."+index+".element.action.properties-amount", menu.getContent().get(i).getAction().getProperties().size());
-                for (String key : menu.getContent().get(i).getAction().getProperties().keySet()) {
-                    cfg.set("content."+index+".element.action.properties."+count+".key", key);
-                    cfg.set("content."+index+".element.action.properties."+count+".value", menu.getContent().get(i).getAction().getProperties().get(key));
-                    count++;
+            if (!menu.getContent().get(i).getActions().isEmpty()) {
+                int aCount = 0;
+                cfg.set("content."+index+".element.actions-amount", menu.getContent().get(i).getActions().size());
+                for (Action a : new ArrayList<>(menu.getContent().get(i).getActions())) {
+                    cfg.set("content."+index+".element.action."+aCount+".name", a.getName());
+                    int count = 0;
+                    cfg.set("content."+index+".element.action."+aCount+".properties-amount", a.getProperties().size());
+                    for (String key : a.getProperties().keySet()) {
+                        cfg.set("content."+index+".element.action."+aCount+".properties."+count+".key", key);
+                        cfg.set("content."+index+".element.action."+aCount+".properties."+count+".value", a.getProperties().get(key));
+                        count++;
+                    }
+                    aCount++;
                 }
             }
             cfg.set("content."+index+".element.item", menu.getContent().get(i).getItem());
@@ -95,30 +102,35 @@ public class MenuFileProxy extends IOProxy {
 
     private ISerializable getMenuFromFileConfig(FileConfiguration cfg) {
         UUID id = cfg.getString("id") == null ? UUID.randomUUID() : UUID.fromString(cfg.getString("id"));
-        int size = cfg.getInt("size");
+        int rows = cfg.getInt("rows");
+        int refreshRateSeconds = cfg.getInt("refresh-rate-seconds");
         String name = cfg.getString("name");
         Map<Integer, Element> content = new HashMap<>();
         for (int i = 0; i < cfg.getInt("content-amount"); i++) {
             content.put(cfg.getInt("content."+i+".slot"), getElementAtIndex(cfg, i));
         }
-        return new Menu(id, size, name, content);
+        return new Menu(id, rows, refreshRateSeconds, name, content);
     }
 
     private Element getElementAtIndex(FileConfiguration cfg, int index) {
-        Action action = null;
-        if (cfg.getString("content."+index+".element.action.name") != null) {
-            action = Menus.getInstance().getFromName(cfg.getString("content."+index+".element.action.name"));
-            if (action != null) {
-                for (int j = 0; j < cfg.getInt("content."+index+".element.action.properties-amount"); j++) {
-                    action.getProperties().put(cfg.getString("content."+index+".element.action.properties."+j+".key"),
-                            "content."+index+".element.action.properties."+j+".value");
+        List<Action> actions = new ArrayList<>();
+        for (int i = 0; i < cfg.getInt("content."+index+".element.actions-amount"); i++) {
+            if (cfg.getString("content."+index+".element.action."+i+".name") != null) {
+                Action action = Menus.getInstance().getFromName(cfg.getString("content."+index+".element.action."+i+".name"));
+                if (action != null) {
+                    for (int j = 0; j < cfg.getInt("content."+index+".element.action."+i+".properties-amount"); j++) {
+                        action.getProperties().put(cfg.getString("content."+index+".element.action."+i+".properties."+j+".key"),
+                                "content."+index+".element.action."+i+".properties."+j+".value");
+                    }
                 }
+                actions.add(action);
             }
         }
         ItemStack item = cfg.getItemStack("content."+index+".element.item");
+        if (item == null) item = new ItemStack(Material.BARRIER);
         String name = cfg.getString("content."+index+".element.name");
         List<String> description = cfg.getStringList("content."+index+".element.description");
-        return new Element(action, item, name, description);
+        return new Element(actions, item, name, description);
     }
 
 }
