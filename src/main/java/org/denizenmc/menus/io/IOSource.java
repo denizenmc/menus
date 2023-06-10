@@ -4,7 +4,6 @@ import org.denizenmc.menus.components.ISerializable;
 import org.denizenmc.menus.components.Query;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface IOSource {
     void create(ISerializable serializable);

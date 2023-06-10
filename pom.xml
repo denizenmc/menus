@@ -6,12 +6,12 @@
 
     <groupId>org.denizenmc.menus</groupId>
     <artifactId>menus</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>Menus</name>
 
-    <description>Modern menu creator</description>
+    <description>Modern menu creator for server owners and developers.</description>
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

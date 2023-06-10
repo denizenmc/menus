@@ -33,6 +33,7 @@ public class MenuFileProxy extends IOProxy {
         cfg.set("rows", menu.getRows());
         cfg.set("refresh-rate-seconds", menu.getRefreshRateSeconds());
         cfg.set("name", menu.getName());
+        cfg.set("title", menu.getTitle());
         int index = 0;
         cfg.set("content-amount", menu.getContent().size());
         for (Integer i : menu.getContent().keySet()) {
@@ -104,12 +105,13 @@ public class MenuFileProxy extends IOProxy {
         UUID id = cfg.getString("id") == null ? UUID.randomUUID() : UUID.fromString(cfg.getString("id"));
         int rows = cfg.getInt("rows");
         int refreshRateSeconds = cfg.getInt("refresh-rate-seconds");
+        String title = cfg.getString("title");
         String name = cfg.getString("name");
         Map<Integer, Element> content = new HashMap<>();
         for (int i = 0; i < cfg.getInt("content-amount"); i++) {
             content.put(cfg.getInt("content."+i+".slot"), getElementAtIndex(cfg, i));
         }
-        return new Menu(id, rows, refreshRateSeconds, name, content);
+        return new Menu(id, rows, refreshRateSeconds, name, title, content);
     }
 
     private Element getElementAtIndex(FileConfiguration cfg, int index) {

@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class Action {
+public abstract class Action implements Comparable<Action>{
     private Map<String, String> properties;
     public Action() {
         properties = getDefaultProperties();
@@ -30,6 +30,11 @@ public abstract class Action {
     public abstract Action copy();
 
     public Map<String, String> getProperties() { return properties; }
+    public Action setProperty(String property, String value) {
+        properties.put(property, value);
+        return this;
+    }
+
     public abstract boolean isDynamicIcon();
     /**
      * If the action corresponds to a dynamic icon in the menu, return here.
@@ -57,5 +62,10 @@ public abstract class Action {
         meta.setLore(lore);
         icon.setItemMeta(meta);
         return icon;
+    }
+
+    @Override
+    public int compareTo(Action a) {
+        return getName().compareTo(a.getName());
     }
 }

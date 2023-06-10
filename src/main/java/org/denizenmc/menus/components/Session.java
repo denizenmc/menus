@@ -80,7 +80,7 @@ public class Session {
         if (menu == null) return;
         Inventory view = Bukkit.createInventory(menu,
                 menu.getRows() < 1 || menu.getRows() > 6 ? 45 : menu.getRows()*9,
-                ChatColor.translateAlternateColorCodes('&', menu.getName()));
+                ChatColor.translateAlternateColorCodes('&', menu.getTitle()));
         populateInventory(view);
         player.openInventory(view);
     }

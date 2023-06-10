@@ -9,6 +9,9 @@ import org.denizenmc.menus.components.Session;
 import javax.annotation.Nullable;
 import java.util.*;
 
+/**
+ * Properties: menu-name
+ */
 public class ChangeMenuAction extends Action {
 
     @Override
@@ -19,7 +22,7 @@ public class ChangeMenuAction extends Action {
     @Override
     public List<String> getDescription() {
         return new ArrayList<>(Arrays.asList("&fChange to another menu.",
-                "", "&eInstructions", "&7>> &fEnter the menu name", "&7>> without color codes"));
+                "", "&eInstructions", "&7>> &fEnter the menu name"));
     }
 
     @Override
@@ -59,7 +62,7 @@ public class ChangeMenuAction extends Action {
     public void onClick(Session session, int count, InventoryClickEvent event) {
         event.setCancelled(true);
         if (getProperties().get("menu-name") == null) return;
-        Menu menu = Menus.getApi().getMenu(getProperties().get("menu-name"));
+        Menu menu = Menus.getAPI().getMenu(getProperties().get("menu-name"));
         if (menu == null) return;
         session.push(menu);
         session.refresh();

@@ -19,11 +19,25 @@ public class Element {
     private String name;
     private List<String> description;
 
-    public Element() {
+    public Element(ItemStack item) {
         actions = new ArrayList<>();
-        item = new ItemStack(Material.BARRIER);
-        name = "&bDefault Element";
-        description = new ArrayList<>(Arrays.asList("&fThis is a default", "&fdescription."));
+        this.item = item;
+        name = "&b ";
+        description = new ArrayList<>();
+    }
+
+    public Element(ItemStack item, String name) {
+        actions = new ArrayList<>();
+        this.item = item;
+        this.name = name;
+        description = new ArrayList<>();
+    }
+
+    public Element(ItemStack item, String name, List<String> description) {
+        actions = new ArrayList<>();
+        this.item = item;
+        this.name = name;
+        this.description = description;
     }
 
     public Element(List<Action> actions, ItemStack item, String name, List<String> description) {
@@ -32,6 +46,10 @@ public class Element {
         this.name = name;
         this.description = description;
     }
+
+    public Element addAction(Action a) { actions.add(a); return this; }
+    public Element setItem(ItemStack item) { this.item = item; return this; }
+    public Element setName(String name) { this.name = name; return this; }
 
     public List<Action> getActions() { return actions; }
     public ItemStack getItem() { return item; }

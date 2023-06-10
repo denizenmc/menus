@@ -10,22 +10,25 @@ public class Menu implements InventoryHolder, ISerializable, Comparable<Menu> {
     private UUID id;
     private int refreshRateSeconds;
     private int rows;
-    private String name;
+    private final String name;
+    private String title;
     private final Map<Integer, Element> content;
 
-    public Menu() {
+    public Menu(String name) {
         id = UUID.randomUUID();
-        name = "Default Menu";
+        this.name = name;
+        title = "New Menu";
         refreshRateSeconds = 1;
         rows = 4;
         content = new HashMap<>();
     }
 
-    public Menu(UUID id, int rows, int refreshRateSeconds, String name, Map<Integer, Element> content) {
+    public Menu(UUID id, int rows, int refreshRateSeconds, String name, String title, Map<Integer, Element> content) {
         this.id = id;
         this.rows = rows;
         this.refreshRateSeconds = refreshRateSeconds;
         this.name = name;
+        this.title = title;
         this.content = content;
     }
 
@@ -34,12 +37,14 @@ public class Menu implements InventoryHolder, ISerializable, Comparable<Menu> {
     public int getRows() {
         return rows;
     }
-    public void setRows(int rows) { this.rows = rows; }
+    public Menu setRows(int rows) {
+        this.rows = rows;
+        return this;
+    }
 
     public String getName() {
         return name;
     }
-    public void setName(String name) { this.name = name; }
 
     public Map<Integer, Element> getContent() {
         return content;
@@ -98,7 +103,21 @@ public class Menu implements InventoryHolder, ISerializable, Comparable<Menu> {
         return refreshRateSeconds;
     }
 
-    public void setRefreshRateSeconds(int refreshRateSeconds) {
+    public Menu setRefreshRateSeconds(int refreshRateSeconds) {
         this.refreshRateSeconds = refreshRateSeconds;
+        return this;
+    }
+
+    public Menu copy() {
+        return new Menu(UUID.randomUUID(), rows, refreshRateSeconds, name, title, content);
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Menu setTitle(String title) {
+        this.title = title;
+        return this;
     }
 }
