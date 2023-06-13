@@ -5,7 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 import org.denizenmc.menus.components.Element;
 import org.denizenmc.menus.components.Menu;
 import org.denizenmc.menus.components.Session;
@@ -15,7 +15,7 @@ import javax.annotation.Nullable;
 
 public class MenusAPI implements IMenusAPI {
     @Override
-    public void registerAction(Action action, JavaPlugin plugin) {
+    public void registerAction(Action action, Plugin plugin) {
         Menus.getInstance().register(action, plugin.getName());
     }
 
@@ -49,7 +49,7 @@ public class MenusAPI implements IMenusAPI {
 
     @Override
     public void updateMenu(Menu menu) {
-
+        Menus.getInstance().getIOSource().update(menu);
     }
 
     @Nullable
@@ -69,6 +69,14 @@ public class MenusAPI implements IMenusAPI {
         Menu menu = getMenu(name);
         if (menu == null) return null;
         return Menus.getInstance().getSessionManager().startSession(player, menu);
+    }
+
+    @Override
+    public Session getSession(Player player) {
+        if (Menus.getInstance().getSessionManager().getSession(player) != null) {
+            return Menus.getInstance().getSessionManager().getSession(player);
+        }
+        return null;
     }
 
     @Override

@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.denizenmc.menus.Menus;
+import org.denizenmc.menus.components.Session;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -37,6 +38,14 @@ public class MenusPlaceholderExpansion extends PlaceholderExpansion {
             case "page":
                 return Menus.getInstance().getSessionManager().getSession(player) == null ?
                         "0" : Menus.getInstance().getSessionManager().getSession(player).getPage()+"";
+            case "text":
+                Session s = Menus.getInstance().getSessionManager().getSession(player);
+                if (s != null) {
+                    if (s.getContext().getValue("menus-text-input", Menus.getInstance()) instanceof String) {
+                        return (String) s.getContext().getValue("menus-text-input", Menus.getInstance());
+                    }
+                }
+                break;
         }
         return "";
     }

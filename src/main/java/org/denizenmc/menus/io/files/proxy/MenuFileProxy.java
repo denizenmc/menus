@@ -1,6 +1,5 @@
 package org.denizenmc.menus.io.files.proxy;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -34,6 +33,9 @@ public class MenuFileProxy extends IOProxy {
         cfg.set("refresh-rate-seconds", menu.getRefreshRateSeconds());
         cfg.set("name", menu.getName());
         cfg.set("title", menu.getTitle());
+        cfg.set("player-head-icon", menu.getPlayerHeadNameIcon());
+        cfg.set("collection", menu.getCollection());
+        cfg.set("permission", menu.getPermission());
         int index = 0;
         cfg.set("content-amount", menu.getContent().size());
         for (Integer i : menu.getContent().keySet()) {
@@ -65,15 +67,27 @@ public class MenuFileProxy extends IOProxy {
     public List<ISerializable> deserialize(Query query) {
         List<ISerializable> menus = new ArrayList<>();
         File file = FileUtils.getFile(Arrays.asList("menus"));
-        if (!file.exists() || !file.isDirectory()) return menus;
+        if (!file.exists() || !file.isDirectory()) {
+            return menus;
+        }
         File [] list = file.listFiles();
         if (list == null) return menus;
-        if (query.getName() != null) {
+        if (query.getCollection() != null) {
             for (File f : list) {
                 if (f.exists()) {
                     FileConfiguration cfg = FileUtils.loadYML(f);
                     if (cfg == null) continue;
-                    if (cfg.getString("name") != null && ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', cfg.getString("name"))).contains(query.getName())) {
+                    if (cfg.getString("collection") != null && cfg.getString("collection").equalsIgnoreCase(query.getName())) {
+                        menus.add(getMenuFromFileConfig(cfg));
+                    }
+                }
+            }
+        } else if (query.getName() != null) {
+            for (File f : list) {
+                if (f.exists()) {
+                    FileConfiguration cfg = FileUtils.loadYML(f);
+                    if (cfg == null) continue;
+                    if (cfg.getString("name") != null && cfg.getString("name").contains(query.getName())) {
                         menus.add(getMenuFromFileConfig(cfg));
                     }
                 }
@@ -106,12 +120,15 @@ public class MenuFileProxy extends IOProxy {
         int rows = cfg.getInt("rows");
         int refreshRateSeconds = cfg.getInt("refresh-rate-seconds");
         String title = cfg.getString("title");
+        String playerHeadIcon = cfg.getString("player-head-icon");
+        String collection = cfg.getString("collection");
+        String permission = cfg.getString("permission");
         String name = cfg.getString("name");
         Map<Integer, Element> content = new HashMap<>();
         for (int i = 0; i < cfg.getInt("content-amount"); i++) {
             content.put(cfg.getInt("content."+i+".slot"), getElementAtIndex(cfg, i));
         }
-        return new Menu(id, rows, refreshRateSeconds, name, title, content);
+        return new Menu(id, rows, refreshRateSeconds, name, title, permission, playerHeadIcon, collection, content);
     }
 
     private Element getElementAtIndex(FileConfiguration cfg, int index) {
@@ -122,10 +139,10 @@ public class MenuFileProxy extends IOProxy {
                 if (action != null) {
                     for (int j = 0; j < cfg.getInt("content."+index+".element.action."+i+".properties-amount"); j++) {
                         action.getProperties().put(cfg.getString("content."+index+".element.action."+i+".properties."+j+".key"),
-                                "content."+index+".element.action."+i+".properties."+j+".value");
+                                cfg.getString("content."+index+".element.action."+i+".properties."+j+".value"));
                     }
+                    if (action.getName() != null) actions.add(action);
                 }
-                actions.add(action);
             }
         }
         ItemStack item = cfg.getItemStack("content."+index+".element.item");

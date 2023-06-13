@@ -1,8 +1,5 @@
 package org.denizenmc.menus.guis.actions;
 
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.ChatColor;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.denizenmc.menus.components.Session;
@@ -11,20 +8,20 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class SendDonateLinkMenusAction extends Action {
+public class AddElementActionAction extends Action {
     @Override
     public String getName() {
-        return "menus-send-donate-link (DEV)";
+        return "menus-add-element-action";
     }
 
     @Override
     public List<String> getDescription() {
-        return new ArrayList<>(Arrays.asList("&fSend donate link."));
+        return new ArrayList<>(Arrays.asList("&fAdd an Element Action"));
     }
 
     @Override
     public String getIconPlayerHeadName() {
-        return "MrSnowDK";
+        return "Hack";
     }
 
     @Override
@@ -34,7 +31,7 @@ public class SendDonateLinkMenusAction extends Action {
 
     @Override
     public Action copy() {
-        return new SendDonateLinkMenusAction();
+        return new AddElementActionAction();
     }
 
     @Override
@@ -55,10 +52,6 @@ public class SendDonateLinkMenusAction extends Action {
 
     @Override
     public void onClick(Session session, int count, InventoryClickEvent event) {
-        event.setCancelled(true);
-        TextComponent text = new TextComponent("Click here to donate. Thank you! :)");
-        text.setColor(ChatColor.YELLOW.asBungee());
-        text.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://denizen.gitbook.io/dungeons/"));
-        session.getPlayer().spigot().sendMessage(text);
+
     }
 }

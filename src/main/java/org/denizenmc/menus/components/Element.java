@@ -1,6 +1,7 @@
 package org.denizenmc.menus.components;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -63,13 +64,15 @@ public class Element {
             for (Action a : new ArrayList<>(actions)) {
                 if (a != null) {
                     a.onBuild(session, counts.getOrDefault(a.getName(), 1));
-                    if (a.isDynamicIcon()) {
+                    if (a.isDynamicIcon() && !isDynamic) {
                         dynamicIcon = a.getDynamicIcon(session, counts.getOrDefault(a.getName(), 1));
                         isDynamic = true;
                     }
                 }
             }
-            if (isDynamic) return dynamicIcon;
+            if (isDynamic) {
+                return dynamicIcon;
+            }
         }
         ItemStack i = new ItemStack(item);
         ItemMeta meta = i.getItemMeta();

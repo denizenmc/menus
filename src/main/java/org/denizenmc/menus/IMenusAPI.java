@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.denizenmc.menus.components.Menu;
 import org.denizenmc.menus.components.Session;
@@ -18,7 +19,7 @@ public interface IMenusAPI {
      * @param action Action to be registered.
      * @param plugin Plugin registering the action.
      */
-    void registerAction(Action action, JavaPlugin plugin);
+    void registerAction(Action action, Plugin plugin);
 
     /**
      * Create an empty menu.
@@ -67,6 +68,13 @@ public interface IMenusAPI {
      * @return
      */
     Session getSession(Player player, String name);
+
+    /**
+     * Get a menu session for a player, if the player already has an active session.
+     * @param player
+     * @return
+     */
+    Session getSession(Player player);
 
     /**
      * Strip name and description to get a basic background ItemStack.

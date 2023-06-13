@@ -3,6 +3,7 @@ package org.denizenmc.menus.components.actions;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.denizenmc.menus.Menus;
+import org.denizenmc.menus.MenusConfiguration;
 import org.denizenmc.menus.components.Menu;
 import org.denizenmc.menus.components.Session;
 
@@ -27,7 +28,7 @@ public class ChangeMenuAction extends Action {
 
     @Override
     public String getIconPlayerHeadName() {
-        return "zasf";
+        return MenusConfiguration.MENUS_PLAYER_HEAD;
     }
 
     @Override
@@ -65,6 +66,6 @@ public class ChangeMenuAction extends Action {
         Menu menu = Menus.getAPI().getMenu(getProperties().get("menu-name"));
         if (menu == null) return;
         session.push(menu);
-        session.refresh();
+        session.open();
     }
 }

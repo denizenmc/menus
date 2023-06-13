@@ -11,24 +11,30 @@ public class Menu implements InventoryHolder, ISerializable, Comparable<Menu> {
     private int refreshRateSeconds;
     private int rows;
     private final String name;
-    private String title;
+    private String title, playerHeadNameIcon, collection, permission;
     private final Map<Integer, Element> content;
 
     public Menu(String name) {
         id = UUID.randomUUID();
         this.name = name;
+        playerHeadNameIcon = "Hack";
+        collection = "Menus";
         title = "New Menu";
+        permission = null;
         refreshRateSeconds = 1;
         rows = 4;
         content = new HashMap<>();
     }
 
-    public Menu(UUID id, int rows, int refreshRateSeconds, String name, String title, Map<Integer, Element> content) {
+    public Menu(UUID id, int rows, int refreshRateSeconds, String name, String title, String permission, String playerHeadNameIcon, String collection, Map<Integer, Element> content) {
         this.id = id;
         this.rows = rows;
         this.refreshRateSeconds = refreshRateSeconds;
         this.name = name;
         this.title = title;
+        this.permission = permission;
+        this.playerHeadNameIcon = playerHeadNameIcon;
+        this.collection = collection;
         this.content = content;
     }
 
@@ -77,6 +83,21 @@ public class Menu implements InventoryHolder, ISerializable, Comparable<Menu> {
         return name.compareTo(o.getName());
     }
 
+    public int getTotal(Action a) {
+        int count = 0;
+        for (Integer i : content.keySet()) {
+            if (content.get(i) != null && !content.get(i).getActions().isEmpty()) {
+                for (Action action : new ArrayList<>(content.get(i).getActions())) {
+                    if (action.getName().equalsIgnoreCase(a.getName())) {
+                        count++;
+                        break;
+                    }
+                }
+            }
+        }
+        return count;
+    }
+
     public int getCount(int slot, Action a) {
         int count = 1;
         if (!content.containsKey(slot)) return count;
@@ -109,7 +130,8 @@ public class Menu implements InventoryHolder, ISerializable, Comparable<Menu> {
     }
 
     public Menu copy() {
-        return new Menu(UUID.randomUUID(), rows, refreshRateSeconds, name, title, content);
+        return new Menu(UUID.randomUUID(), rows, refreshRateSeconds,
+                name, title, permission, playerHeadNameIcon, collection, content);
     }
 
     public String getTitle() {
@@ -118,6 +140,27 @@ public class Menu implements InventoryHolder, ISerializable, Comparable<Menu> {
 
     public Menu setTitle(String title) {
         this.title = title;
+        return this;
+    }
+
+    public String getPlayerHeadNameIcon() { return playerHeadNameIcon; }
+    public void setPlayerHeadNameIcon(String playerHeadNameIcon) { this.playerHeadNameIcon = playerHeadNameIcon; }
+
+    public String getCollection() {
+        return collection;
+    }
+
+    public Menu setCollection(String collection) {
+        this.collection = collection;
+        return this;
+    }
+
+    public String getPermission() {
+        return permission;
+    }
+
+    public Menu setPermission(String permission) {
+        this.permission = permission;
         return this;
     }
 }

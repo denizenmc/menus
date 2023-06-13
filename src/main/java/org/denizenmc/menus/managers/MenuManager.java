@@ -4,6 +4,7 @@ import org.denizenmc.menus.Menus;
 import org.denizenmc.menus.components.ISerializable;
 import org.denizenmc.menus.components.Menu;
 import org.denizenmc.menus.components.Query;
+import org.denizenmc.menus.io.EntityType;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,7 +45,7 @@ public class MenuManager implements Manager<Menu> {
 
     @Override
     public Menu getByName(String name) {
-        List<ISerializable> menus = Menus.getInstance().getIOSource().read(new Query().setName(name));
+        List<ISerializable> menus = Menus.getInstance().getIOSource().read(new Query().setName(name).setEntity(EntityType.MENU));
         if (!menus.isEmpty() && menus.get(0) instanceof Menu) return ((Menu) menus.get(0));
         return null;
     }

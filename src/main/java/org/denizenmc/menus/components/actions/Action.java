@@ -57,8 +57,6 @@ public abstract class Action implements Comparable<Action>{
         meta.setDisplayName(ChatColor.AQUA + getName());
         List<String> lore = new ArrayList<>();
         for (String line : getDescription()) lore.add(ChatColor.translateAlternateColorCodes('&', line));
-        lore.add("");
-        lore.add(ChatColor.GRAY + "Click to Select");
         meta.setLore(lore);
         icon.setItemMeta(meta);
         return icon;

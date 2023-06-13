@@ -4,14 +4,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.denizenmc.menus.components.actions.*;
-import org.denizenmc.menus.guis.menus.NavigationMenu;
+import org.denizenmc.menus.guis.actions.*;
+import org.denizenmc.menus.guis.menus.*;
 import org.denizenmc.menus.integrations.MenusPlaceholderExpansion;
 import org.denizenmc.menus.io.IOSource;
 import org.denizenmc.menus.io.files.FileIOSource;
 import org.denizenmc.menus.listeners.MenusInventoryClickListener;
+import org.denizenmc.menus.listeners.MenusInventoryCloseListener;
 import org.denizenmc.menus.managers.MenuManager;
 import org.denizenmc.menus.managers.SessionManager;
 import org.denizenmc.menus.managers.commands.MenusCommandManager;
+import org.denizenmc.menus.services.SynchronousMenusTaskService;
 
 import java.util.*;
 
@@ -21,6 +24,7 @@ public final class Menus extends JavaPlugin {
     private IOSource ioSource;
     private MenuManager menuManager = new MenuManager();
     private SessionManager sessionManager = new SessionManager();
+    private SynchronousMenusTaskService taskService = new SynchronousMenusTaskService();
     private Map<String, List<Action>> registeredActions = new HashMap<>();
 
     @Override
@@ -33,6 +37,8 @@ public final class Menus extends JavaPlugin {
         initListeners();
         initActions();
         registerPlaceholders();
+        initMenus();
+        taskService.runTaskTimer(this, 0, 1);
     }
 
     @Override
@@ -51,6 +57,7 @@ public final class Menus extends JavaPlugin {
     private void initListeners() {
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new MenusInventoryClickListener(), this);
+        pm.registerEvents(new MenusInventoryCloseListener(), this);
     }
 
     private void initActions() {
@@ -70,8 +77,25 @@ public final class Menus extends JavaPlugin {
     }
 
     private void initMenus() {
-        if (getAPI().getMenu(Constants.NAVIGATION_MENU) == null) new NavigationMenu().create();
-
+        // init custom actions
+        getAPI().registerAction(new EditMenuAction(), Menus.getInstance());
+        getAPI().registerAction(new SendDonateLinkMenusAction(), Menus.getInstance());
+        getAPI().registerAction(new SendWikiLinkMenusAction(), Menus.getInstance());
+        getAPI().registerAction(new EditElementAction(), Menus.getInstance());
+        getAPI().registerAction(new EditElementDescriptionLineAction(), Menus.getInstance());
+        getAPI().registerAction(new AddElementDescriptionLineAction(), Menus.getInstance());
+        getAPI().registerAction(new SendWikiLinkMenusAction(), Menus.getInstance());
+        getAPI().registerAction(new RemoveElementAction(), Menus.getInstance());
+        getAPI().registerAction(new EditElementActionsAction(), Menus.getInstance());
+        getAPI().registerAction(new EditElementActionPropertyAction(), Menus.getInstance());
+        getAPI().registerAction(new AddElementActionAction(), Menus.getInstance());
+        getAPI().registerAction(new SelectElementActionAction(), Menus.getInstance());
+        if (getAPI().getMenu(MenusConfiguration.NAVIGATION_MENU) == null) new NavigationMenu().create();
+        if (getAPI().getMenu(MenusConfiguration.MENUS_LIST_MENU) == null) new MenusListMenu().create();
+        if (getAPI().getMenu(MenusConfiguration.ELEMENT_DESCRIPTION_EDIT_MENU) == null) new EditElementDescriptionMenu().create();
+        if (getAPI().getMenu(MenusConfiguration.ELEMENT_ACTIONS_EDIT_MENU) == null) new EditElementActionsMenu().create();
+        if (getAPI().getMenu(MenusConfiguration.ELEMENT_ACTION_PROPERTY_EDIT_MENU) == null) new EditElementActionPropertiesMenu().create();
+        if (getAPI().getMenu(MenusConfiguration.ELEMENT_ACTION_SELECT_MENU) == null) new SelectElementActionMenu().create();
     }
 
     public static Menus getInstance() { return instance; }
@@ -82,6 +106,13 @@ public final class Menus extends JavaPlugin {
         else {
             registeredActions.put(plugin, new ArrayList<>(Arrays.asList(action)));
         }
+    }
+
+    public List<Action> getRegisteredActions() {
+        List<Action> allActions = new ArrayList<>();
+        for (String plugin : registeredActions.keySet()) allActions.addAll(registeredActions.get(plugin));
+        Collections.sort(allActions);
+        return allActions;
     }
 
     public Action getFromName(String name) {
@@ -95,4 +126,5 @@ public final class Menus extends JavaPlugin {
     public IOSource getIOSource() { return ioSource; }
     public MenuManager getMenuManager() { return menuManager; }
     public SessionManager getSessionManager() { return sessionManager; }
+    public SynchronousMenusTaskService getTaskService() { return taskService; }
 }

@@ -5,6 +5,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.denizenmc.menus.components.actions.Action;
+import org.denizenmc.menus.events.MenusOpenEvent;
+import org.denizenmc.menus.events.MenusRefreshEvent;
 
 import java.util.*;
 
@@ -13,7 +15,7 @@ public class Session {
     private Stack<Menu> navigator;
     private int page;
     private boolean isPaused;
-    private final Map<String, Object> context;
+    private final SessionContext context;
 
     public Session(Player player, Menu menu) {
         this.player = player;
@@ -21,7 +23,7 @@ public class Session {
         navigator.add(menu);
         page = 1;
         isPaused = false;
-        context = new HashMap<>();
+        context = new SessionContext();
     }
 
     public int getPage() {
@@ -65,19 +67,21 @@ public class Session {
         return player;
     }
 
-    public Map<String, Object> getContext() {
+    public SessionContext getContext() {
         return context;
     }
 
     public boolean isPaused() { return isPaused; }
 
     /**
-     * Opens a new menu for the player.
+     * Opens menu at the top of the navigator stack for the player.
      */
     public void open() {
         isPaused = false;
         Menu menu = getMenu();
         if (menu == null) return;
+        Bukkit.getPluginManager().callEvent(
+                new MenusOpenEvent(this));
         Inventory view = Bukkit.createInventory(menu,
                 menu.getRows() < 1 || menu.getRows() > 6 ? 45 : menu.getRows()*9,
                 ChatColor.translateAlternateColorCodes('&', menu.getTitle()));
@@ -86,13 +90,16 @@ public class Session {
     }
 
     /**
-     * Refreshes the player's open menu. Useful for menu/page changes and item updates.
+     * Refreshes the player's open menu. Useful for menu data changes and item updates.
+     * Useful for page changes.
+     * DO NOT USE WHEN YOU HAVE CHANGED THE SESSION'S MENU!
      */
     public void refresh() {
         Inventory inventory = player.getOpenInventory().getTopInventory();
         if (!(inventory.getHolder() instanceof Menu)) return;
+        Bukkit.getPluginManager().callEvent(
+                new MenusRefreshEvent(this));
         populateInventory(inventory);
-        player.openInventory(inventory);
     }
 
     private void populateInventory(Inventory view) {

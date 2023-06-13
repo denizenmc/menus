@@ -4,6 +4,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -13,6 +14,10 @@ import org.denizenmc.menus.components.Session;
 import javax.annotation.Nullable;
 import java.util.*;
 
+/**
+ * Properties: placeholder-text, title-text, item-material, item-display-name, item-description
+ *
+ */
 public class TextInputAction extends Action {
 
     @Override
@@ -46,7 +51,7 @@ public class TextInputAction extends Action {
         map.put("item-material", "PAPER");
         map.put("item-display-name", "&eText Input");
         map.put("item-description", "");
-        return new HashMap<>();
+        return map;
     }
 
     @Override
@@ -73,16 +78,27 @@ public class TextInputAction extends Action {
     @Override
     public void onClick(Session session, int count, InventoryClickEvent event) {
         event.setCancelled(true);
+        if (event.getClick().equals(ClickType.LEFT)) {
+            openEditor(session);
+        } else if (event.getClick().equals(ClickType.SHIFT_RIGHT)) {
+            if (session.getContext().getValue("menus-text-input", Menus.getInstance()) != null) {
+                session.getContext().remove("menus-text-input", Menus.getInstance());
+                session.refresh();
+            }
+        }
+    }
+
+    public void openEditor(Session session) {
         session.pause();
         new AnvilGUI.Builder()
                 .onClose(player -> {
                     session.resume();
                 })
                 .onClick((slot, stateSnapshot) -> {
-                    if(slot != AnvilGUI.Slot.OUTPUT) {
+                    if (slot != AnvilGUI.Slot.OUTPUT) {
                         return Collections.emptyList();
                     }
-                    session.getContext().put("menus-text-input", PlaceholderAPI.setPlaceholders(session.getPlayer(), stateSnapshot.getText()));
+                    session.getContext().setValue("menus-text-input", Menus.getInstance(), PlaceholderAPI.setPlaceholders(session.getPlayer(), stateSnapshot.getText()));
                     return Arrays.asList(AnvilGUI.ResponseAction.close());
                 })
                 .text(getProperties().get("placeholder-text"))

@@ -20,7 +20,11 @@ public class MenusInventoryClickListener implements Listener {
         if (event.getClickedInventory() == null || !(event.getClickedInventory().getHolder() instanceof Menu)) return;
         Menu menu = (Menu) event.getClickedInventory().getHolder();
         if (menu.getContent() == null || !menu.getContent().containsKey(event.getSlot())) return;
-        if (menu.getContent().get(event.getSlot()) == null || menu.getContent().get(event.getSlot()).getActions().isEmpty()) return;
+        if (menu.getContent().get(event.getSlot()) == null) return;
+        if (menu.getContent().get(event.getSlot()).getActions().isEmpty()) {
+            event.setCancelled(true);
+            return;
+        }
         for (Action action : new ArrayList<>(menu.getContent().get(event.getSlot()).getActions())) {
             if (action == null) continue;
             action.onClick(s, menu.getCount(event.getSlot(), action), event);

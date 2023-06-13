@@ -15,7 +15,7 @@ public class SendWikiLinkMenusAction extends Action {
 
     @Override
     public String getName() {
-        return "menus-send-wiki-link";
+        return "menus-send-wiki-link (DEV)";
     }
 
     @Override

@@ -53,6 +53,6 @@ public class BackAction extends Action {
     @Override
     public void onClick(Session session, int count, InventoryClickEvent event) {
         session.pop();
-        session.refresh();
+        session.open();
     }
 }

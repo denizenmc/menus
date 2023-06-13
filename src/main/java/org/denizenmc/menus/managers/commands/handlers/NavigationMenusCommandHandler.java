@@ -1,7 +1,8 @@
 package org.denizenmc.menus.managers.commands.handlers;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.denizenmc.menus.Constants;
+import org.denizenmc.menus.MenusConfiguration;
 import org.denizenmc.menus.Menus;
 
 public class NavigationMenusCommandHandler extends MenusCommandHandler {
@@ -14,7 +15,7 @@ public class NavigationMenusCommandHandler extends MenusCommandHandler {
     public void execute(String[] args) {
         if (player != null && !player.hasPermission("menus.admin")) return;
         if (player != null) {
-            Menus.getAPI().getSession(player, Constants.NAVIGATION_MENU).open();
+            Menus.getAPI().getSession(player, MenusConfiguration.NAVIGATION_MENU).open();
         }
     }
 }
