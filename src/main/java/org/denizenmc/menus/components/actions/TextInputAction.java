@@ -21,6 +21,11 @@ import java.util.*;
 public class TextInputAction extends Action {
 
     @Override
+    public boolean isHidden() {
+        return false;
+    }
+
+    @Override
     public String getName() {
         return "menus-text-input";
     }

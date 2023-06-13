@@ -27,7 +27,12 @@ public class MenusInventoryClickListener implements Listener {
         }
         for (Action action : new ArrayList<>(menu.getContent().get(event.getSlot()).getActions())) {
             if (action == null) continue;
-            action.onClick(s, menu.getCount(event.getSlot(), action), event);
+            boolean oneFound = false;
+            if (action.getClicks().contains(event.getClick())) {
+                oneFound = true;
+                action.onClick(s, menu.getCount(event.getSlot(), action), event);
+            }
+            if (!oneFound) event.setCancelled(true);
         }
     }
 }

@@ -10,6 +10,11 @@ import java.util.*;
 public class NextPageAction extends Action {
 
     @Override
+    public boolean isHidden() {
+        return false;
+    }
+
+    @Override
     public String getName() {
         return "menus-next-page";
     }

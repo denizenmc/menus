@@ -1,5 +1,6 @@
 package org.denizenmc.menus.guis.actions;
 
+import org.bukkit.ChatColor;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -17,6 +18,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class EditElementActionsAction extends Action {
+    @Override
+    public boolean isHidden() {
+        return true;
+    }
+
     @Override
     public String getName() {
         return "menus-edit-element-action";
@@ -67,7 +73,24 @@ public class EditElementActionsAction extends Action {
 
     @Override
     public void onBuild(Session session, int count) {
+        if (count == 1) {
+            if (!(session.getContext().getValue(MenusContextKeys.MENU_TO_EDIT, Menus.getInstance()) instanceof Menu)) return;
+            Menu menu = (Menu) session.getContext().getValue(MenusContextKeys.MENU_TO_EDIT, Menus.getInstance());
+            if (menu == null) return;
 
+            if (!(session.getContext().getValue(MenusContextKeys.ELEMENT_TO_EDIT, Menus.getInstance()) instanceof Element)) return;
+            Element element = (Element) session.getContext().getValue(MenusContextKeys.ELEMENT_TO_EDIT, Menus.getInstance());
+            if (element == null) return;
+
+            if (!(session.getContext().getValue(MenusContextKeys.ELEMENT_ACTION_TO_ADD, Menus.getInstance()) instanceof Action)) return;
+            Action action = (Action) session.getContext().getValue(MenusContextKeys.ELEMENT_ACTION_TO_ADD, Menus.getInstance());
+            if (action != null) {
+                element.addAction(action);
+                Menus.getAPI().updateMenu(menu);
+            }
+
+            session.getContext().remove(MenusContextKeys.ELEMENT_ACTION_TO_ADD, Menus.getInstance());
+        }
     }
 
     @Override
@@ -84,13 +107,18 @@ public class EditElementActionsAction extends Action {
         int paginatedCount = (session.getPage()-1)*session.getMenu().getTotal(this)+count;
         if (paginatedCount <= element.getActions().size()) {
             if (event.getClick().equals(ClickType.LEFT)) {
-                // add action to context
                 session.getContext().setValue(MenusContextKeys.ELEMENT_ACTION_TO_EDIT, Menus.getInstance(), element.getActions().get(paginatedCount-1));
                 new ChangeMenuAction().setProperty("menu-name", MenusConfiguration.ELEMENT_ACTION_PROPERTY_EDIT_MENU)
                         .onClick(session, count, event);
             } else if (event.getClick().equals(ClickType.SHIFT_LEFT)) {
-
+                session.getContext().setValue(MenusContextKeys.ELEMENT_ACTION_TO_EDIT, Menus.getInstance(), element.getActions().get(paginatedCount-1));
+                new ChangeMenuAction().setProperty("menu-name", MenusConfiguration.ELEMENT_ACTION_CLICK_EDIT_MENU)
+                        .onClick(session, count, event);
             } else if (event.getClick().equals(ClickType.SHIFT_RIGHT)) {
+                if (element.getActions().get(paginatedCount-1).isHidden()) {
+                    event.getWhoClicked().sendMessage(ChatColor.RED + "(!) " + ChatColor.WHITE + "Cannot delete hidden (developer) action from element");
+                    return;
+                }
                 element.getActions().remove(paginatedCount-1);
                 Menus.getAPI().updateMenu(menu);
                 session.refresh();
@@ -103,10 +131,10 @@ public class EditElementActionsAction extends Action {
         if (icon.getItemMeta() != null) {
             ItemMeta meta = icon.getItemMeta();
             List<String> lore = meta.getLore() != null ? new ArrayList<>(meta.getLore()) : new ArrayList<>();
-            lore.addAll(Arrays.asList("", "&7-------------------------------",
-                    "&eLeft-Click: &fEdit Properties",
-                    "&eShift-Left-Click: &fEdit Clicks",
-                    "&eShift-Right-Click: &cRemove Action"));
+            lore.addAll(Arrays.asList("", ChatColor.GRAY + "-------------------------------",
+                    ChatColor.YELLOW + "Left-Click: " + ChatColor.WHITE + "Edit Properties",
+                    ChatColor.YELLOW + "Shift-Left-Click: " + ChatColor.WHITE + "Edit Clicks",
+                    ChatColor.YELLOW + "Shift-Right-Click: " + ChatColor.RED + "Remove Action"));
             meta.setLore(lore);
             icon.setItemMeta(meta);
         }

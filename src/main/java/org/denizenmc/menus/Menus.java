@@ -90,12 +90,15 @@ public final class Menus extends JavaPlugin {
         getAPI().registerAction(new EditElementActionPropertyAction(), Menus.getInstance());
         getAPI().registerAction(new AddElementActionAction(), Menus.getInstance());
         getAPI().registerAction(new SelectElementActionAction(), Menus.getInstance());
+        getAPI().registerAction(new EditElementActionClickAction(), Menus.getInstance());
+        getAPI().registerAction(new RemoveActionAction(), Menus.getInstance());
         if (getAPI().getMenu(MenusConfiguration.NAVIGATION_MENU) == null) new NavigationMenu().create();
         if (getAPI().getMenu(MenusConfiguration.MENUS_LIST_MENU) == null) new MenusListMenu().create();
         if (getAPI().getMenu(MenusConfiguration.ELEMENT_DESCRIPTION_EDIT_MENU) == null) new EditElementDescriptionMenu().create();
         if (getAPI().getMenu(MenusConfiguration.ELEMENT_ACTIONS_EDIT_MENU) == null) new EditElementActionsMenu().create();
         if (getAPI().getMenu(MenusConfiguration.ELEMENT_ACTION_PROPERTY_EDIT_MENU) == null) new EditElementActionPropertiesMenu().create();
         if (getAPI().getMenu(MenusConfiguration.ELEMENT_ACTION_SELECT_MENU) == null) new SelectElementActionMenu().create();
+        if (getAPI().getMenu(MenusConfiguration.ELEMENT_ACTION_CLICK_EDIT_MENU) == null) new EditElementActionClicksMenu().create();
     }
 
     public static Menus getInstance() { return instance; }
@@ -108,11 +111,40 @@ public final class Menus extends JavaPlugin {
         }
     }
 
-    public List<Action> getRegisteredActions() {
+    public List<Action> getRegisteredActions(String filter) {
         List<Action> allActions = new ArrayList<>();
-        for (String plugin : registeredActions.keySet()) allActions.addAll(registeredActions.get(plugin));
+        for (String plugin : registeredActions.keySet()) {
+            if (filter == null) {
+                for (Action a : registeredActions.get(plugin)) {
+                    if (!a.isHidden()) allActions.add(a);
+                }
+            } else {
+                if (filter.contains("plugin=") && filter.indexOf("plugin=")+7 < filter.length()) {
+                    if (plugin.equalsIgnoreCase(filter.substring(filter.indexOf("plugin=")+7))) {
+                        for (Action a : registeredActions.get(plugin)) {
+                            if (!a.isHidden()) allActions.add(a);
+                        }
+                    }
+                } else if (filter.contains("name=") && filter.indexOf("name=")+5 < filter.length()) {
+                    for (Action a : registeredActions.get(plugin)) {
+                        if (!a.isHidden() && a.getName().equals(filter.substring(filter.indexOf("name=")+5))) allActions.add(a);
+                    }
+                } else {
+                    for (Action a : registeredActions.get(plugin)) {
+                        if (!a.isHidden()) allActions.add(a);
+                    }
+                }
+            }
+        }
         Collections.sort(allActions);
         return allActions;
+    }
+
+    public String getPluginFromAction(Action a) {
+        for (String plugin : registeredActions.keySet()) {
+            if (registeredActions.get(plugin).contains(a)) return plugin;
+        }
+        return null;
     }
 
     public Action getFromName(String name) {

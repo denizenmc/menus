@@ -2,6 +2,7 @@ package org.denizenmc.menus.io.files.proxy;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.denizenmc.menus.Menus;
 import org.denizenmc.menus.components.ISerializable;
@@ -45,6 +46,12 @@ public class MenuFileProxy extends IOProxy {
                 cfg.set("content."+index+".element.actions-amount", menu.getContent().get(i).getActions().size());
                 for (Action a : new ArrayList<>(menu.getContent().get(i).getActions())) {
                     cfg.set("content."+index+".element.action."+aCount+".name", a.getName());
+                    cfg.set("content."+index+".element.action."+aCount+".clicks-amount", a.getClicks().size());
+                    int clickAmount = 0;
+                    for (ClickType click : a.getClicks()) {
+                        cfg.set("content."+index+".element.action."+aCount+".clicks."+clickAmount, click.name());
+                        clickAmount++;
+                    }
                     int count = 0;
                     cfg.set("content."+index+".element.action."+aCount+".properties-amount", a.getProperties().size());
                     for (String key : a.getProperties().keySet()) {
@@ -137,6 +144,13 @@ public class MenuFileProxy extends IOProxy {
             if (cfg.getString("content."+index+".element.action."+i+".name") != null) {
                 Action action = Menus.getInstance().getFromName(cfg.getString("content."+index+".element.action."+i+".name"));
                 if (action != null) {
+                    action.getClicks().clear();
+                    for (int j = 0; j < cfg.getInt("content."+index+".element.action."+i+".clicks-amount"); j++) {
+                        try {
+                            ClickType click = ClickType.valueOf(cfg.getString("content."+index+".element.action."+i+".clicks."+j));
+                            action.getClicks().add(click);
+                        } catch (Exception ignored) {}
+                    }
                     for (int j = 0; j < cfg.getInt("content."+index+".element.action."+i+".properties-amount"); j++) {
                         action.getProperties().put(cfg.getString("content."+index+".element.action."+i+".properties."+j+".key"),
                                 cfg.getString("content."+index+".element.action."+i+".properties."+j+".value"));

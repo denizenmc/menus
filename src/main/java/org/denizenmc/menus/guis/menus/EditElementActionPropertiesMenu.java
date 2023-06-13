@@ -10,12 +10,13 @@ import org.denizenmc.menus.components.actions.BackAction;
 import org.denizenmc.menus.components.actions.NextPageAction;
 import org.denizenmc.menus.components.actions.PreviousPageAction;
 import org.denizenmc.menus.guis.actions.EditElementActionPropertyAction;
+import org.denizenmc.menus.guis.actions.RemoveActionAction;
 
 import java.util.Arrays;
 
 public class EditElementActionPropertiesMenu {
     public void create() {
-        Menu menu = Menus.getAPI().createEmptyMenu(MenusConfiguration.ELEMENT_DESCRIPTION_EDIT_MENU, 3)
+        Menu menu = Menus.getAPI().createEmptyMenu(MenusConfiguration.ELEMENT_ACTION_PROPERTY_EDIT_MENU, 3)
                 .setTitle("Edit Action Properties")
                 .setCollection("Menus Dev")
                 .setRefreshRateSeconds(15);
@@ -34,7 +35,7 @@ public class EditElementActionPropertiesMenu {
         menu.getContent().put(18,
                 new Element(MenusUtils.getHead(MenusConfiguration.BACK_PLAYER_HEAD),
                         "&bGo Back", Arrays.asList("", "&eClick Here"))
-                        .addAction(new BackAction()));
+                        .addAction(new BackAction()).addAction(new RemoveActionAction()));
         menu.getContent().put(21,
                 new Element(MenusUtils.getHead(MenusConfiguration.PREVIOUS_PAGE_PLAYER_HEAD),
                         "&bPrevious Page", Arrays.asList("&fCurrent Page: &7(%menus_page%)", "", "&eClick Here"))

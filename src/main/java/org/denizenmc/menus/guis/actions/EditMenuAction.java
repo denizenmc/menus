@@ -22,6 +22,11 @@ import java.util.*;
 public class EditMenuAction extends Action {
 
     @Override
+    public boolean isHidden() {
+        return true;
+    }
+
+    @Override
     public String getName() {
         return "menus-edit-menu (DEV)";
     }

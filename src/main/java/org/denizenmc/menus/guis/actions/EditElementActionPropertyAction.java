@@ -1,5 +1,6 @@
 package org.denizenmc.menus.guis.actions;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -17,6 +18,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class EditElementActionPropertyAction extends Action {
+    @Override
+    public boolean isHidden() {
+        return true;
+    }
+
     @Override
     public String getName() {
         return "menus-edit-action-property";
@@ -66,7 +72,7 @@ public class EditElementActionPropertyAction extends Action {
         Collections.sort(properties);
         int paginatedCount = (session.getPage()-1)*session.getMenu().getTotal(this)+count;
         if (paginatedCount <= properties.size()) {
-            return getActionPropertyIcon(properties.get(paginatedCount-1));
+            return getActionPropertyIcon(properties.get(paginatedCount-1), action.getProperties().get(properties.get(paginatedCount-1)));
         }
         return null;
     }
@@ -76,24 +82,22 @@ public class EditElementActionPropertyAction extends Action {
         if (count == 1) {
             if (!(session.getContext().getValue("menus-text-input", Menus.getInstance()) instanceof String)) return;
             String text = (String) session.getContext().getValue("menus-text-input", Menus.getInstance());
-
             if (!(session.getContext().getValue(MenusContextKeys.MENU_TO_EDIT, Menus.getInstance()) instanceof Menu)) return;
             Menu menu = (Menu) session.getContext().getValue(MenusContextKeys.MENU_TO_EDIT, Menus.getInstance());
             if (menu == null) return;
-
             if (!(session.getContext().getValue(MenusContextKeys.ELEMENT_ACTION_TO_EDIT, Menus.getInstance()) instanceof Action)) return;
             Action action = (Action) session.getContext().getValue(MenusContextKeys.ELEMENT_ACTION_TO_EDIT, Menus.getInstance());
             if (action == null || action.getProperties().isEmpty()) return;
-
             if (!(session.getContext().getValue(MenusContextKeys.ELEMENT_ACTION_PROPERTY_TO_EDIT, Menus.getInstance()) instanceof Integer)) return;
             Integer index = (Integer) session.getContext().getValue(MenusContextKeys.ELEMENT_ACTION_PROPERTY_TO_EDIT, Menus.getInstance());
-
             List<String> properties = new ArrayList<>(action.getProperties().keySet());
             Collections.sort(properties);
-
             if (index >= properties.size()) return;
-            properties.set(index, text);
+            Bukkit.getConsoleSender().sendMessage("Setting property " + properties.get(index) + " to be " + text);
+            action.setProperty(properties.get(index), text);
             Menus.getAPI().updateMenu(menu);
+            session.getContext().remove("menus-text-input", Menus.getInstance());
+            session.getContext().remove(MenusContextKeys.ELEMENT_ACTION_PROPERTY_TO_EDIT, Menus.getInstance());
         }
     }
 
@@ -120,13 +124,13 @@ public class EditElementActionPropertyAction extends Action {
         }
     }
 
-    private ItemStack getActionPropertyIcon(String property) {
+    private ItemStack getActionPropertyIcon(String property, String value) {
         ItemStack icon = new ItemStack(Material.PAPER);
         if (icon.getItemMeta() != null) {
             ItemMeta meta = icon.getItemMeta();
             meta.setDisplayName(ChatColor.AQUA + property);
             List<String> lore = new ArrayList<>();
-            lore.addAll(Arrays.asList(ChatColor.WHITE + property,
+            lore.addAll(Arrays.asList(ChatColor.WHITE + value,
                     ChatColor.GRAY + "-------------------------------",
                     ChatColor.YELLOW + "Click: " + ChatColor.WHITE + "Edit"));
             meta.setLore(lore);

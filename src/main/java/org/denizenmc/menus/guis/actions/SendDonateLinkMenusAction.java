@@ -13,6 +13,11 @@ import java.util.*;
 
 public class SendDonateLinkMenusAction extends Action {
     @Override
+    public boolean isHidden() {
+        return true;
+    }
+
+    @Override
     public String getName() {
         return "menus-send-donate-link (DEV)";
     }

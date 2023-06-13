@@ -16,6 +16,11 @@ import java.util.*;
 public class ChangeMenuAction extends Action {
 
     @Override
+    public boolean isHidden() {
+        return false;
+    }
+
+    @Override
     public String getName() {
         return "menus-change-menu";
     }

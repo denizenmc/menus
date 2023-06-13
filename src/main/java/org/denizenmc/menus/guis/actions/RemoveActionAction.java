@@ -1,18 +1,16 @@
 package org.denizenmc.menus.guis.actions;
 
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.ChatColor;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.denizenmc.menus.Menus;
 import org.denizenmc.menus.components.Session;
 import org.denizenmc.menus.components.actions.Action;
+import org.denizenmc.menus.guis.MenusContextKeys;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class SendWikiLinkMenusAction extends Action {
-
+public class RemoveActionAction extends Action {
     @Override
     public boolean isHidden() {
         return true;
@@ -20,12 +18,12 @@ public class SendWikiLinkMenusAction extends Action {
 
     @Override
     public String getName() {
-        return "menus-send-wiki-link (DEV)";
+        return "menus-remove-action-from-context";
     }
 
     @Override
     public List<String> getDescription() {
-        return new ArrayList<>(Arrays.asList("&fSend wiki link."));
+        return new ArrayList<>(Arrays.asList("&fRemoves Action From Context"));
     }
 
     @Override
@@ -40,7 +38,7 @@ public class SendWikiLinkMenusAction extends Action {
 
     @Override
     public Action copy() {
-        return new SendWikiLinkMenusAction();
+        return new RemoveActionAction();
     }
 
     @Override
@@ -62,9 +60,6 @@ public class SendWikiLinkMenusAction extends Action {
     @Override
     public void onClick(Session session, int count, InventoryClickEvent event) {
         event.setCancelled(true);
-        TextComponent text = new TextComponent("Click here for the Menus Wiki");
-        text.setColor(ChatColor.YELLOW.asBungee());
-        text.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://denizen.gitbook.io/dungeons/"));
-        session.getPlayer().spigot().sendMessage(text);
+        session.getContext().remove(MenusContextKeys.ELEMENT_ACTION_TO_EDIT, Menus.getInstance());
     }
 }

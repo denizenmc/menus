@@ -10,6 +10,7 @@ import org.denizenmc.menus.components.Menu;
 import org.denizenmc.menus.components.actions.BackAction;
 import org.denizenmc.menus.components.actions.NextPageAction;
 import org.denizenmc.menus.components.actions.PreviousPageAction;
+import org.denizenmc.menus.guis.actions.AddElementActionAction;
 import org.denizenmc.menus.guis.actions.AddElementDescriptionLineAction;
 import org.denizenmc.menus.guis.actions.EditElementActionsAction;
 import org.denizenmc.menus.guis.actions.RemoveElementAction;
@@ -18,7 +19,7 @@ import java.util.Arrays;
 
 public class EditElementActionsMenu {
     public void create() {
-        Menu menu = Menus.getAPI().createEmptyMenu(MenusConfiguration.ELEMENT_DESCRIPTION_EDIT_MENU, 3)
+        Menu menu = Menus.getAPI().createEmptyMenu(MenusConfiguration.ELEMENT_ACTIONS_EDIT_MENU, 3)
                 .setTitle("Edit Element Actions")
                 .setCollection("Menus Dev")
                 .setRefreshRateSeconds(15);
@@ -44,8 +45,8 @@ public class EditElementActionsMenu {
                         .addAction(new PreviousPageAction()));
         menu.getContent().put(22,
                 new Element(new ItemStack(Material.PAPER),
-                        "&b&lAdd Line", Arrays.asList("&7Add an &fAction", "", "&eClick Here"))
-                        .addAction(new AddElementDescriptionLineAction()));
+                        "&b&lAdd Action", Arrays.asList("&7Add an &fAction", "", "&eClick Here"))
+                        .addAction(new AddElementActionAction()));
         menu.getContent().put(23,
                 new Element(MenusUtils.getHead(MenusConfiguration.NEXT_PAGE_PLAYER_HEAD),
                         "&bNext Page", Arrays.asList("&fCurrent Page: &7(%menus_page%)", "", "&eClick Here"))

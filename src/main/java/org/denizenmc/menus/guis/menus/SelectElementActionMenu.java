@@ -1,7 +1,6 @@
 package org.denizenmc.menus.guis.menus;
 
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 import org.denizenmc.menus.Menus;
 import org.denizenmc.menus.MenusConfiguration;
 import org.denizenmc.menus.MenusUtils;
@@ -10,7 +9,7 @@ import org.denizenmc.menus.components.Menu;
 import org.denizenmc.menus.components.actions.BackAction;
 import org.denizenmc.menus.components.actions.NextPageAction;
 import org.denizenmc.menus.components.actions.PreviousPageAction;
-import org.denizenmc.menus.guis.actions.AddElementDescriptionLineAction;
+import org.denizenmc.menus.components.actions.TextInputAction;
 import org.denizenmc.menus.guis.actions.RemoveElementAction;
 import org.denizenmc.menus.guis.actions.SelectElementActionAction;
 
@@ -21,7 +20,7 @@ public class SelectElementActionMenu {
         Menu menu = Menus.getAPI().createEmptyMenu(MenusConfiguration.ELEMENT_ACTION_SELECT_MENU, 3)
                 .setTitle("Select Action")
                 .setCollection("Menus Dev")
-                .setRefreshRateSeconds(60);
+                .setRefreshRateSeconds(300);
         setContent(menu);
     }
 
@@ -46,6 +45,13 @@ public class SelectElementActionMenu {
                 new Element(MenusUtils.getHead(MenusConfiguration.NEXT_PAGE_PLAYER_HEAD),
                         "&bNext Page", Arrays.asList("&fCurrent Page: &7(%menus_page%)", "", "&eClick Here"))
                         .addAction(new NextPageAction()));
+        menu.getContent().put(26,
+                new Element(MenusUtils.getHead(MenusConfiguration.TEXT_INPUT_PLAYER_HEAD),
+                        "&bFilter", Arrays.asList("&fUse 'plugin=' or 'name='","","&eCurrent Filter", "&f%menus_text%",
+                        "", "&eExample", "&fplugin=Menus", "", "&eLeft-Click: &fEdit", "&eShift-Right-Click: &cClear"))
+                        .addAction(new TextInputAction().setProperty("placeholder-text", "Search...")
+                                .setProperty("title-text", "Filter").setProperty("item-material", "PAPER")
+                                .setProperty("item-display-name", "&bFilter").setProperty("item-description", "")));
         Menus.getAPI().updateMenu(menu);
     }
 }

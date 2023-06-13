@@ -12,6 +12,11 @@ import java.util.*;
 
 public class RemoveElementAction extends Action {
     @Override
+    public boolean isHidden() {
+        return true;
+    }
+
+    @Override
     public String getName() {
         return "menus-remove-element-from-context";
     }

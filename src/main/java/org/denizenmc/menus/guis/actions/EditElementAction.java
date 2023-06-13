@@ -20,6 +20,11 @@ import java.util.*;
 public class EditElementAction extends Action {
 
     @Override
+    public boolean isHidden() {
+        return true;
+    }
+
+    @Override
     public String getName() {
         return "menus-edit-element (DEV)";
     }
@@ -125,7 +130,9 @@ public class EditElementAction extends Action {
         // Edit Actions
         if (event.getClick().equals(ClickType.LEFT)) {
             if (menu.getContent().containsKey(event.getSlot())) {
-
+                session.getContext().setValue(MenusContextKeys.ELEMENT_TO_EDIT, Menus.getInstance(), menu.getContent().get(event.getSlot()));
+                new ChangeMenuAction().setProperty("menu-name",
+                        MenusConfiguration.ELEMENT_ACTIONS_EDIT_MENU).onClick(session, count, event);
             } else {
                 menu.getContent().put(event.getSlot(), new Element(Menus.getAPI().getBackgroundItemFromMaterial(Material.GRAY_STAINED_GLASS_PANE)));
                 update(session, menu);

@@ -21,6 +21,11 @@ import java.util.*;
 public class EditElementDescriptionLineAction extends Action {
 
     @Override
+    public boolean isHidden() {
+        return true;
+    }
+
+    @Override
     public String getName() {
         return "menus-edit-element-description-line";
     }

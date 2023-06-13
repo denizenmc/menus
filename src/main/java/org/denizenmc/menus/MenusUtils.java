@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.denizenmc.menus.components.Menu;
+import org.denizenmc.menus.components.actions.Action;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,13 @@ public class MenusUtils {
             for (Object o : list) elements.add((Menu) o);
         }
         return elements;
+    }
+    public static List<Action> getActionsFromList(List list) {
+        List<Action> actions = new ArrayList<>();
+        if (list != null && !list.isEmpty() && list.get(0) instanceof Action) {
+            for (Object o : list) actions.add((Action) o);
+        }
+        return actions;
     }
     public static int getIntFromString(String string) {
         int n = 0;

@@ -10,6 +10,11 @@ import java.util.*;
 public class CloseMenuAction extends Action {
 
     @Override
+    public boolean isHidden() {
+        return false;
+    }
+
+    @Override
     public String getName() {
         return "menus-close-menu";
     }
