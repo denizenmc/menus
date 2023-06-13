@@ -1,7 +1,9 @@
 package org.denizenmc.menus.guis.actions;
 
+import org.bukkit.ChatColor;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.denizenmc.menus.Menus;
 import org.denizenmc.menus.components.Element;
 import org.denizenmc.menus.components.Menu;
@@ -57,6 +59,12 @@ public class SelectElementActionAction extends Action {
         List<Action> actions = Menus.getInstance().getRegisteredActions();
         int paginatedCount = (session.getPage()-1)*session.getMenu().getTotal(this)+count;
 
+
+        // change to Action PLUGIN
+
+        if (paginatedCount <= actions.size() && !actions.isEmpty()) {
+            return getActionIcon(actions.get(paginatedCount-1));
+        }
         return null;
     }
 
@@ -68,5 +76,17 @@ public class SelectElementActionAction extends Action {
     @Override
     public void onClick(Session session, int count, InventoryClickEvent event) {
 
+    }
+
+    private ItemStack getActionIcon(Action a) {
+        ItemStack item = new ItemStack(a.getIcon());
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return item;
+        List<String> lore = item.getItemMeta().getLore() == null ? new ArrayList<>() : item.getItemMeta().getLore();
+        lore.addAll(Arrays.asList(ChatColor.GRAY + "-------------------------------",
+                ChatColor.YELLOW + "Click to Select"));
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+        return item;
     }
 }
