@@ -7,10 +7,7 @@ import org.denizenmc.menus.MenusUtils;
 import org.denizenmc.menus.components.Element;
 import org.denizenmc.menus.components.Menu;
 import org.denizenmc.menus.components.actions.BackAction;
-import org.denizenmc.menus.components.actions.NextPageAction;
-import org.denizenmc.menus.components.actions.PreviousPageAction;
 import org.denizenmc.menus.guis.actions.EditElementActionClickAction;
-import org.denizenmc.menus.guis.actions.EditElementActionPropertyAction;
 import org.denizenmc.menus.guis.actions.RemoveActionAction;
 
 import java.util.Arrays;
@@ -21,6 +18,8 @@ public class EditElementActionClicksMenu {
                 .setTitle("Edit Action Clicks")
                 .setCollection("Menus Dev")
                 .setRefreshRateSeconds(15);
+        menu.setCanOpenDirectly(false);
+        menu.setHidden(true);
         setContent(menu);
     }
 

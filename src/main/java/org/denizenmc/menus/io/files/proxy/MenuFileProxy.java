@@ -36,6 +36,8 @@ public class MenuFileProxy extends IOProxy {
         cfg.set("title", menu.getTitle());
         cfg.set("player-head-icon", menu.getPlayerHeadNameIcon());
         cfg.set("collection", menu.getCollection());
+        cfg.set("can-open-directly", menu.isCanOpenDirectly());
+        cfg.set("is-hidden", menu.isHidden());
         cfg.set("permission", menu.getPermission());
         int index = 0;
         cfg.set("content-amount", menu.getContent().size());
@@ -129,13 +131,15 @@ public class MenuFileProxy extends IOProxy {
         String title = cfg.getString("title");
         String playerHeadIcon = cfg.getString("player-head-icon");
         String collection = cfg.getString("collection");
+        boolean canOpenDirectly = cfg.getBoolean("can-open-directly");
+        boolean isHidden = cfg.getBoolean("is-hidden");
         String permission = cfg.getString("permission");
         String name = cfg.getString("name");
         Map<Integer, Element> content = new HashMap<>();
         for (int i = 0; i < cfg.getInt("content-amount"); i++) {
             content.put(cfg.getInt("content."+i+".slot"), getElementAtIndex(cfg, i));
         }
-        return new Menu(id, rows, refreshRateSeconds, name, title, permission, playerHeadIcon, collection, content);
+        return new Menu(id, rows, refreshRateSeconds, name, title, permission, playerHeadIcon, collection, canOpenDirectly, isHidden, content);
     }
 
     private Element getElementAtIndex(FileConfiguration cfg, int index) {

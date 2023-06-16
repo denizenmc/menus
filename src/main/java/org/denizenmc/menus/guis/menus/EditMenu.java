@@ -17,6 +17,8 @@ public class EditMenu {
                 .setCollection("Menus Dev")
                 .setRows(reference.getRows())
                 .setRefreshRateSeconds(15);
+        menu.setCanOpenDirectly(false);
+        menu.setHidden(true);
         return setContent(menu);
     }
     private Menu setContent(Menu menu) {

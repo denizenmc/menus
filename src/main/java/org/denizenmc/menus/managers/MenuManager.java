@@ -55,7 +55,11 @@ public class MenuManager implements Manager<Menu> {
         List<ISerializable> menus = Menus.getInstance().getIOSource().read(query);
         List<Menu> list = new ArrayList<>();
         for (ISerializable serializable : menus) {
-            if (serializable instanceof Menu) list.add((Menu) serializable);
+            if (serializable instanceof Menu) {
+                if (!(((Menu) serializable).isHidden())) {
+                    list.add((Menu) serializable);
+                }
+            }
         }
         Collections.sort(list);
         return list;

@@ -50,4 +50,8 @@ public class SessionContext {
         }
     }
 
+    public void clear() {
+        context.clear();
+    }
+
 }

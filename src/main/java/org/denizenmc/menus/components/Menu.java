@@ -8,10 +8,9 @@ import java.util.*;
 
 public class Menu implements InventoryHolder, ISerializable, Comparable<Menu> {
     private UUID id;
-    private int refreshRateSeconds;
-    private int rows;
-    private final String name;
-    private String title, playerHeadNameIcon, collection, permission;
+    private int refreshRateSeconds, rows;
+    private boolean canOpenDirectly, isHidden;
+    private String title, playerHeadNameIcon, collection, permission, name;
     private final Map<Integer, Element> content;
 
     public Menu(String name) {
@@ -23,10 +22,13 @@ public class Menu implements InventoryHolder, ISerializable, Comparable<Menu> {
         permission = null;
         refreshRateSeconds = 1;
         rows = 4;
+        canOpenDirectly = true;
+        isHidden = false;
         content = new HashMap<>();
     }
 
-    public Menu(UUID id, int rows, int refreshRateSeconds, String name, String title, String permission, String playerHeadNameIcon, String collection, Map<Integer, Element> content) {
+    public Menu(UUID id, int rows, int refreshRateSeconds, String name, String title, String permission, String playerHeadNameIcon,
+                String collection, boolean canOpenDirectly, boolean isHidden, Map<Integer, Element> content) {
         this.id = id;
         this.rows = rows;
         this.refreshRateSeconds = refreshRateSeconds;
@@ -35,6 +37,8 @@ public class Menu implements InventoryHolder, ISerializable, Comparable<Menu> {
         this.permission = permission;
         this.playerHeadNameIcon = playerHeadNameIcon;
         this.collection = collection;
+        this.canOpenDirectly = canOpenDirectly;
+        this.isHidden = isHidden;
         this.content = content;
     }
 
@@ -51,6 +55,7 @@ public class Menu implements InventoryHolder, ISerializable, Comparable<Menu> {
     public String getName() {
         return name;
     }
+    public void setName(String name) { this.name = name; }
 
     public Map<Integer, Element> getContent() {
         return content;
@@ -131,7 +136,7 @@ public class Menu implements InventoryHolder, ISerializable, Comparable<Menu> {
 
     public Menu copy() {
         return new Menu(UUID.randomUUID(), rows, refreshRateSeconds,
-                name, title, permission, playerHeadNameIcon, collection, content);
+                name, title, permission, playerHeadNameIcon, collection, canOpenDirectly, isHidden, content);
     }
 
     public String getTitle() {
@@ -162,5 +167,21 @@ public class Menu implements InventoryHolder, ISerializable, Comparable<Menu> {
     public Menu setPermission(String permission) {
         this.permission = permission;
         return this;
+    }
+
+    public boolean isCanOpenDirectly() {
+        return canOpenDirectly;
+    }
+
+    public void setCanOpenDirectly(boolean canOpenDirectly) {
+        this.canOpenDirectly = canOpenDirectly;
+    }
+
+    public boolean isHidden() {
+        return isHidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        isHidden = hidden;
     }
 }

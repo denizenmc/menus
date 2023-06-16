@@ -92,6 +92,9 @@ public final class Menus extends JavaPlugin {
         getAPI().registerAction(new SelectElementActionAction(), Menus.getInstance());
         getAPI().registerAction(new EditElementActionClickAction(), Menus.getInstance());
         getAPI().registerAction(new RemoveActionAction(), Menus.getInstance());
+        getAPI().registerAction(new CreateMenuAction(), Menus.getInstance());
+        getAPI().registerAction(new EditMenuPropertyAction(), Menus.getInstance());
+        getAPI().registerAction(new DeleteMenuAction(), Menus.getInstance());
         if (getAPI().getMenu(MenusConfiguration.NAVIGATION_MENU) == null) new NavigationMenu().create();
         if (getAPI().getMenu(MenusConfiguration.MENUS_LIST_MENU) == null) new MenusListMenu().create();
         if (getAPI().getMenu(MenusConfiguration.ELEMENT_DESCRIPTION_EDIT_MENU) == null) new EditElementDescriptionMenu().create();
@@ -99,6 +102,8 @@ public final class Menus extends JavaPlugin {
         if (getAPI().getMenu(MenusConfiguration.ELEMENT_ACTION_PROPERTY_EDIT_MENU) == null) new EditElementActionPropertiesMenu().create();
         if (getAPI().getMenu(MenusConfiguration.ELEMENT_ACTION_SELECT_MENU) == null) new SelectElementActionMenu().create();
         if (getAPI().getMenu(MenusConfiguration.ELEMENT_ACTION_CLICK_EDIT_MENU) == null) new EditElementActionClicksMenu().create();
+        if (getAPI().getMenu(MenusConfiguration.MENU_PROPERTIES_EDIT_MENU) == null) new EditMenuPropertiesMenu().create();
+        if (getAPI().getMenu(MenusConfiguration.CONFIRM_DELETE_MENU) == null) new ConfirmDeleteMenu().create();
     }
 
     public static Menus getInstance() { return instance; }

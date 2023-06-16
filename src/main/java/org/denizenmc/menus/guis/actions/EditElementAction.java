@@ -125,6 +125,7 @@ public class EditElementAction extends Action {
                 menu.getContent().put(event.getSlot(), new Element(new ItemStack(event.getCursor())));
             }
             update(session, menu);
+            return;
         }
 
         // Edit Actions

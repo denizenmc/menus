@@ -28,7 +28,7 @@ public class EditMenuAction extends Action {
 
     @Override
     public String getName() {
-        return "menus-edit-menu (DEV)";
+        return "menus-edit-menu";
     }
 
     @Override
@@ -92,9 +92,20 @@ public class EditMenuAction extends Action {
     @Override
     public void onBuild(Session session, int count) {
         if (count == 1) {
+
+            if (session.getContext().getValue(MenusContextKeys.MENU_TO_CREATE, Menus.getInstance()) instanceof Boolean) {
+                if (session.getContext().getValue("menus-text-input", Menus.getInstance()) instanceof String) {
+                    String name = (String) session.getContext().getValue("menus-text-input", Menus.getInstance());
+                    Menus.getAPI().createEmptyMenu(name, 3);
+                    session.getContext().remove("menus-text-input", Menus.getInstance());
+                    session.getContext().remove(MenusContextKeys.MENU_TO_CREATE, Menus.getInstance());
+                }
+            }
+            session.getContext().remove(MenusContextKeys.MENU_TO_EDIT, Menus.getInstance());
             List<Menu> menus = new ArrayList<>();
             if (session.getContext().getValue("menus-text-input", Menus.getInstance()) instanceof String) {
                 String query = (String) session.getContext().getValue("menus-text-input", Menus.getInstance());
+                if (query == null) return;
                 if (query.contains("name=") && query.indexOf("name=")+5 < query.length()) {
                     String name = query.substring(query.indexOf("name=")+5);
                     menus = Menus.getInstance().getMenuManager().getList(new Query().setName(name).setEntity(EntityType.MENU));
@@ -129,12 +140,11 @@ public class EditMenuAction extends Action {
                 if (menus.get(paginatedCount-1).getCollection().equalsIgnoreCase("Menus Dev")) {
                     session.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', MenusConfiguration.ERROR_CANNOT_DELETE_MENUS_DEV_MENU));
                 } else {
-                    Menus.getInstance().getMenuManager().remove(menus.get(paginatedCount-1));
-                    session.refresh();
+                    session.getContext().setValue(MenusContextKeys.MENU_TO_EDIT, Menus.getInstance(), menus.get(paginatedCount-1));
                 }
             }
         } else if (event.getClick().equals(ClickType.SHIFT_LEFT)) {
-
+            session.getContext().setValue(MenusContextKeys.MENU_TO_EDIT, Menus.getInstance(), menus.get(paginatedCount-1));
         }
     }
 }

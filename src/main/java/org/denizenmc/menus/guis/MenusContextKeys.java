@@ -10,4 +10,6 @@ public class MenusContextKeys {
     public static String ELEMENT_ACTION_PROPERTY_TO_EDIT = "menus-element-action-property-to-edit";
     public static String LOADED_ACTIONS = "menus-loaded-actions";
     public static String ELEMENT_ACTION_TO_ADD = "menus-element-action-to-add";
+    public static String MENU_TO_CREATE = "menus-menu-to-create";
+    public static String MENU_PROPERTY_TO_EDIT = "menus-menu-property-to-edit";
 }

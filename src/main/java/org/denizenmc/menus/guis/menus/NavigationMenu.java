@@ -19,6 +19,8 @@ public class NavigationMenu {
                 .setTitle("Menus")
                 .setCollection("Menus Dev")
                 .setRefreshRateSeconds(60);
+        menu.setCanOpenDirectly(false);
+        menu.setHidden(true);
         setContent(menu);
     }
 

@@ -22,6 +22,8 @@ public class EditElementDescriptionMenu {
                 .setTitle("Edit Element Description")
                 .setCollection("Menus Dev")
                 .setRefreshRateSeconds(15);
+        menu.setCanOpenDirectly(false);
+        menu.setHidden(true);
         setContent(menu);
     }
 

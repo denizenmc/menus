@@ -21,6 +21,8 @@ public class SelectElementActionMenu {
                 .setTitle("Select Action")
                 .setCollection("Menus Dev")
                 .setRefreshRateSeconds(300);
+        menu.setCanOpenDirectly(false);
+        menu.setHidden(true);
         setContent(menu);
     }
 

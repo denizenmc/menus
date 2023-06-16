@@ -37,6 +37,10 @@ public abstract class Action implements Comparable<Action>{
         properties.put(property, value);
         return this;
     }
+    public Action setClicks(List<ClickType> clicks) {
+        this.clicks = clicks;
+        return this;
+    }
 
     public abstract boolean isDynamicIcon();
     /**
