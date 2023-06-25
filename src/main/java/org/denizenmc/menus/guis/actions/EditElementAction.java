@@ -114,6 +114,19 @@ public class EditElementAction extends Action {
         Menu menu = (Menu) session.getContext().getValue(MenusContextKeys.MENU_TO_EDIT, Menus.getInstance());
         if (menu == null) return;
 
+        // check if copying
+        if (session.getContext().getValue(MenusContextKeys.ELEMENT_TO_COPY, Menus.getInstance()) != null) {
+            Element element = (Element) session.getContext().getValue(MenusContextKeys.ELEMENT_TO_COPY, Menus.getInstance());
+            if (event.getClick().equals(ClickType.MIDDLE)) {
+                session.getContext().remove(MenusContextKeys.ELEMENT_TO_COPY, Menus.getInstance());
+                session.getPlayer().setItemOnCursor(null);
+            } else if (event.getClick().equals(ClickType.LEFT)) {
+                menu.getContent().put(event.getSlot(), element);
+            }
+            session.refresh();
+            return;
+        }
+
         // Check clicking with item
         if (event.getCursor() != null && event.getCursor().getType() != Material.AIR) {
             if (menu.getContent().containsKey(event.getSlot())) {
@@ -129,7 +142,7 @@ public class EditElementAction extends Action {
         }
 
         // Edit Actions
-        if (event.getClick().equals(ClickType.LEFT)) {
+        if (event.getClick().equals(ClickType.LEFT) && (event.getCursor() == null || event.getCursor().getType() == Material.AIR)) {
             if (menu.getContent().containsKey(event.getSlot())) {
                 session.getContext().setValue(MenusContextKeys.ELEMENT_TO_EDIT, Menus.getInstance(), menu.getContent().get(event.getSlot()));
                 new ChangeMenuAction().setProperty("menu-name",
@@ -157,6 +170,11 @@ public class EditElementAction extends Action {
         } else if (event.getClick().equals(ClickType.RIGHT)) {
             session.getContext().setValue(MenusContextKeys.ELEMENT_TO_EDIT, Menus.getInstance(), menu.getContent().get(event.getSlot()));
             new ChangeMenuAction().setProperty("menu-name", MenusConfiguration.ELEMENT_DESCRIPTION_EDIT_MENU).onClick(session, count, event);
+        } else if (event.getClick().equals(ClickType.MIDDLE)) {
+            if (menu.getContent().containsKey(event.getSlot())) {
+                session.getContext().setValue(MenusContextKeys.ELEMENT_TO_COPY, Menus.getInstance(), menu.getContent().get(event.getSlot()));
+                event.getWhoClicked().setItemOnCursor(menu.getContent().get(event.getSlot()).getItem());
+            }
         }
         event.setCancelled(true);
     }
@@ -176,7 +194,10 @@ public class EditElementAction extends Action {
                 "&eLeft-Click: &fEdit Actions",
                 "&eShift-Left-Click: &fEdit Display Name",
                 "&eRight-Click: &fEdit Description",
-                "&eShift-Right-Click: &cRemove Element"));
+                "&eShift-Right-Click: &cRemove Element",
+                "&eMiddle-Click: &fSelect/Deselect Element. Left-Click on",
+                "&fany slot to duplicate element to that slot"
+        ));
         return description;
     }
 

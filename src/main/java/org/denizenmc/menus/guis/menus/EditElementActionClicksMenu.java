@@ -31,13 +31,16 @@ public class EditElementActionClicksMenu {
                 new Element(MenusUtils.getHead(MenusConfiguration.BACK_PLAYER_HEAD),
                         "&bGo Back", Arrays.asList("", "&eClick Here"))
                         .addAction(new BackAction()).addAction(new RemoveActionAction()));
-        menu.getContent().put(2,
-                new Element(Menus.getAPI().getBackgroundItemFromMaterial(Material.GRAY_STAINED_GLASS_PANE))
-                        .addAction(new EditElementActionClickAction()));
         menu.getContent().put(4,
                 new Element(Menus.getAPI().getBackgroundItemFromMaterial(Material.GRAY_STAINED_GLASS_PANE))
                         .addAction(new EditElementActionClickAction()));
+        menu.getContent().put(5,
+                new Element(Menus.getAPI().getBackgroundItemFromMaterial(Material.GRAY_STAINED_GLASS_PANE))
+                        .addAction(new EditElementActionClickAction()));
         menu.getContent().put(6,
+                new Element(Menus.getAPI().getBackgroundItemFromMaterial(Material.GRAY_STAINED_GLASS_PANE))
+                        .addAction(new EditElementActionClickAction()));
+        menu.getContent().put(7,
                 new Element(Menus.getAPI().getBackgroundItemFromMaterial(Material.GRAY_STAINED_GLASS_PANE))
                         .addAction(new EditElementActionClickAction()));
         menu.getContent().put(8,

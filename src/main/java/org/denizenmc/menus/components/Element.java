@@ -57,6 +57,10 @@ public class Element {
     public String getName() { return name; }
     public List<String> getDescription() { return description; }
 
+    public Element copy() {
+        return new Element(actions, item, name, description);
+    }
+
     public ItemStack build(Session session, Map<String, Integer> counts) {
         if (!actions.isEmpty()) {
             ItemStack dynamicIcon = null;

@@ -40,6 +40,7 @@ public class MenuFileProxy extends IOProxy {
         cfg.set("is-hidden", menu.isHidden());
         cfg.set("permission", menu.getPermission());
         int index = 0;
+        cfg.set("content", null);
         cfg.set("content-amount", menu.getContent().size());
         for (Integer i : menu.getContent().keySet()) {
             cfg.set("content."+index+".slot", i);

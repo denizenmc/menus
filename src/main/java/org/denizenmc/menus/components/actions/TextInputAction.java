@@ -103,13 +103,14 @@ public class TextInputAction extends Action {
                     if (slot != AnvilGUI.Slot.OUTPUT) {
                         return Collections.emptyList();
                     }
-                    session.getContext().setValue("menus-text-input", Menus.getInstance(), PlaceholderAPI.setPlaceholders(session.getPlayer(), stateSnapshot.getText()));
+                    session.getContext().setValue("menus-text-input", Menus.getInstance(), stateSnapshot.getText());
                     return Arrays.asList(AnvilGUI.ResponseAction.close());
                 })
                 .text(getProperties().get("placeholder-text"))
                 .itemLeft(getItem())
                 .title(getProperties().get("title-text"))
                 .plugin(Menus.getInstance())
+                .preventClose()
                 .open(session.getPlayer());
     }
 

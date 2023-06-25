@@ -14,6 +14,7 @@ import org.denizenmc.menus.listeners.MenusInventoryCloseListener;
 import org.denizenmc.menus.managers.MenuManager;
 import org.denizenmc.menus.managers.SessionManager;
 import org.denizenmc.menus.managers.commands.MenusCommandManager;
+import org.denizenmc.menus.managers.commands.MenusTabHandler;
 import org.denizenmc.menus.services.SynchronousMenusTaskService;
 
 import java.util.*;
@@ -48,6 +49,7 @@ public final class Menus extends JavaPlugin {
 
     private void initCommands() {
         getCommand("menus").setExecutor(new MenusCommandManager());
+        getCommand("menus").setTabCompleter(new MenusTabHandler());
     }
 
     private void initIOSource() {

@@ -16,7 +16,7 @@ public abstract class Action implements Comparable<Action>{
     private List<ClickType> clicks;
     public Action() {
         properties = getDefaultProperties();
-        clicks = new ArrayList<>(Arrays.asList(ClickType.LEFT, ClickType.RIGHT, ClickType.SHIFT_LEFT, ClickType.SHIFT_RIGHT));
+        clicks = new ArrayList<>(Arrays.asList(ClickType.LEFT, ClickType.RIGHT, ClickType.SHIFT_LEFT, ClickType.SHIFT_RIGHT, ClickType.MIDDLE));
         if (properties == null) properties = new HashMap<>();
     }
     public Action(Map<String, String> properties, List<ClickType> clicks) {

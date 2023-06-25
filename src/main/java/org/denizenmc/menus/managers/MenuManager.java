@@ -65,6 +65,20 @@ public class MenuManager implements Manager<Menu> {
         return list;
     }
 
+    public List<String> getMenuNames() {
+        List<ISerializable> menus = Menus.getInstance().getIOSource().read(new Query().setEntity(EntityType.MENU));
+        List<String> list = new ArrayList<>();
+        for (ISerializable serializable : menus) {
+            if (serializable instanceof Menu) {
+                if (!(((Menu) serializable).isHidden())) {
+                    list.add(((Menu) serializable).getName());
+                }
+            }
+        }
+        Collections.sort(list);
+        return list;
+    }
+
     @Override
     public String getName() {
         return "Menus";

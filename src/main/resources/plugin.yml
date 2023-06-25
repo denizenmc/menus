@@ -1,7 +1,7 @@
 name: Menus
 version: '${project.version}'
+api-version: 1.13
 main: org.denizenmc.menus.Menus
-api-version: 1.19
 authors: [ Denizen ]
 description: Internal menus library.
 depend: [PlaceholderAPI]

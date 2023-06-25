@@ -77,6 +77,8 @@ public class EditElementActionClickAction extends Action {
                 return getActionClickIcon(ClickType.RIGHT, action);
             case 4:
                 return getActionClickIcon(ClickType.SHIFT_RIGHT, action);
+            case 5:
+                return getActionClickIcon(ClickType.MIDDLE, action);
         }
         return null;
     }
@@ -128,6 +130,13 @@ public class EditElementActionClickAction extends Action {
                     action.getClicks().remove(ClickType.SHIFT_RIGHT);
                 } else {
                     action.getClicks().add(ClickType.SHIFT_RIGHT);
+                }
+                break;
+            case 5:
+                if (action.getClicks().contains(ClickType.MIDDLE)) {
+                    action.getClicks().remove(ClickType.MIDDLE);
+                } else {
+                    action.getClicks().add(ClickType.MIDDLE);
                 }
                 break;
         }

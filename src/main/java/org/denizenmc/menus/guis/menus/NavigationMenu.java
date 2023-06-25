@@ -26,7 +26,7 @@ public class NavigationMenu {
 
     private void setContent(Menu menu) {
         menu.getContent().put(11,
-                new Element(MenusUtils.getHead("zasf"),
+                new Element(MenusUtils.getHead("Laserpanda"),
                         "&b&lWiki", Arrays.asList("&fServer Owner &7and", "&fDeveloper &7Guides", "", "&eClick Here"))
                         .addAction(new SendWikiLinkMenusAction()).addAction(new CloseMenuAction()));
         menu.getContent().put(13,

@@ -4,9 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.denizenmc.menus.Menus;
 import org.denizenmc.menus.components.actions.Action;
 import org.denizenmc.menus.events.MenusOpenEvent;
 import org.denizenmc.menus.events.MenusRefreshEvent;
+import org.denizenmc.menus.guis.MenusContextKeys;
 
 import java.util.*;
 
@@ -78,6 +80,8 @@ public class Session {
      */
     public void open() {
         isPaused = false;
+        page = 1;
+        context.remove(MenusContextKeys.ELEMENT_TO_COPY, Menus.getInstance());
         Menu menu = getMenu();
         if (menu == null) return;
         Bukkit.getPluginManager().callEvent(

@@ -99,7 +99,7 @@ public class EditMenuPropertyAction extends Action {
                 item.setItemMeta(meta);
                 break;
             case 4:
-                item = new ItemStack(Material.OAK_SIGN);
+                item = new ItemStack(Material.FEATHER);
                 meta = item.getItemMeta();
                 meta.setDisplayName(ChatColor.AQUA + "Title");
                 lore.add(ChatColor.WHITE + "Current: " + ChatColor.translateAlternateColorCodes('&', menu.getTitle()));

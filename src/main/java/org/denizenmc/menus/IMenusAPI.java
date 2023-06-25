@@ -1,12 +1,9 @@
 package org.denizenmc.menus;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.denizenmc.menus.components.Menu;
 import org.denizenmc.menus.components.Session;
 import org.denizenmc.menus.components.actions.Action;

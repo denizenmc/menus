@@ -86,6 +86,7 @@ public class EditElementDescriptionLineAction extends Action {
 
             if (!(session.getContext().getValue(MenusContextKeys.ELEMENT_DESCRIPTION_LINE_TO_EDIT, Menus.getInstance()) instanceof Integer)) return;
             Integer line = (Integer) session.getContext().getValue(MenusContextKeys.ELEMENT_DESCRIPTION_LINE_TO_EDIT, Menus.getInstance());
+            if (line == null) return;
 
             if (!(session.getContext().getValue("menus-text-input", Menus.getInstance()) instanceof String)) return;
             String text = (String) session.getContext().getValue("menus-text-input", Menus.getInstance());

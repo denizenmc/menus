@@ -93,7 +93,6 @@ public class EditElementActionPropertyAction extends Action {
             List<String> properties = new ArrayList<>(action.getProperties().keySet());
             Collections.sort(properties);
             if (index >= properties.size()) return;
-            Bukkit.getConsoleSender().sendMessage("Setting property " + properties.get(index) + " to be " + text);
             action.setProperty(properties.get(index), text);
             Menus.getAPI().updateMenu(menu);
             session.getContext().remove("menus-text-input", Menus.getInstance());
@@ -115,7 +114,7 @@ public class EditElementActionPropertyAction extends Action {
         if (paginatedCount <= properties.size()) {
             session.getContext().setValue(MenusContextKeys.ELEMENT_ACTION_PROPERTY_TO_EDIT, Menus.getInstance(), paginatedCount-1);
             TextInputAction input = (TextInputAction) new TextInputAction()
-                    .setProperty("placeholder-text", properties.get(paginatedCount-1))
+                    .setProperty("placeholder-text", action.getProperties().get(properties.get(paginatedCount-1)))
                     .setProperty("title-text", "Edit Action Property")
                     .setProperty("item-material", "PAPER")
                     .setProperty("item-display-name", "&eAction Property")
